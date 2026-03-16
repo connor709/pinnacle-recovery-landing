@@ -11,14 +11,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================
-   PINNACLE RECOVERY — QUIZ LANDING PAGE
-   Brand-matched: Poppins + Roboto Slab
-   Colors from their Elementor kit
+   PINNACLE RECOVERY — QUIZ LANDING PAGE v2
+   Weische-style emotional quiz flow
    ============================================ */
 
 :root {
   --color-dark: #000512;
-  --color-navy: #003E6B;
+  --color-navy: #1B3A5C;
+  --color-navy-deep: #122840;
   --color-blue: #6EC1E4;
   --color-green: #61CE70;
   --color-steel: #ACB1BF;
@@ -27,13 +27,13 @@
   --color-gray-text: #7A7A7A;
   --color-light-bg: #F5F6F7;
   --color-white: #FFFFFF;
-  --color-overlay: rgba(0, 5, 18, 0.65);
   --font-display: 'Poppins', sans-serif;
   --font-serif: 'Roboto Slab', serif;
   --max-width: 1140px;
   --section-pad: 100px;
   --section-pad-mobile: 60px;
   --transition: 0.3s ease;
+  --pill: 50px;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,6 +54,9 @@ body {
   overflow-x: hidden;
 }
 
+body.modal-open { overflow: hidden; }
+body.results-active .page-content { display: none; }
+
 img { max-width: 100%; height: auto; display: block; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
@@ -65,7 +68,7 @@ ul { list-style: none; }
 }
 
 /* ============================================
-   SECTION HEADINGS
+   HEADINGS
    ============================================ */
 
 .section-eyebrow {
@@ -97,7 +100,7 @@ ul { list-style: none; }
 }
 
 /* ============================================
-   BUTTONS (square corners, Poppins 500, 1.6px tracking)
+   BUTTONS — ALL pill-shaped (border-radius: 50px)
    ============================================ */
 
 .btn {
@@ -107,14 +110,13 @@ ul { list-style: none; }
   font-family: var(--font-display);
   font-weight: 500;
   font-size: 16px;
-  letter-spacing: 1.6px;
+  letter-spacing: 0.5px;
   border: none;
-  border-radius: 0;
+  border-radius: var(--pill);
   cursor: pointer;
   transition: all var(--transition);
-  text-transform: none;
   padding: 16px 36px;
-  min-height: 56px;
+  min-height: 52px;
 }
 
 .btn-primary {
@@ -122,9 +124,9 @@ ul { list-style: none; }
   color: var(--color-white);
 }
 .btn-primary:hover {
-  background: #00507f;
+  background: #244a6e;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,62,107,0.3);
+  box-shadow: 0 8px 25px rgba(27,58,92,0.3);
 }
 
 .btn-green {
@@ -158,14 +160,12 @@ ul { list-style: none; }
 }
 
 /* ============================================
-   NAVBAR (sticky)
+   NAVBAR
    ============================================ */
 
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   z-index: 1000;
   background: rgba(255,255,255,0.97);
   backdrop-filter: blur(12px);
@@ -174,9 +174,7 @@ ul { list-style: none; }
   transition: box-shadow var(--transition);
 }
 
-.navbar.scrolled {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
+.navbar.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
 
 .navbar-inner {
   max-width: var(--max-width);
@@ -185,149 +183,733 @@ ul { list-style: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 76px;
+  height: 72px;
 }
 
-.navbar-logo img {
-  height: 50px;
-  width: auto;
-}
+.navbar-logo img { height: 48px; width: auto; }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
+.navbar-right { display: flex; align-items: center; gap: 20px; }
 
 .navbar-phone {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-display);
   font-weight: 500;
   font-size: 15px;
   color: var(--color-navy);
-  letter-spacing: 0.5px;
 }
 
-.navbar-phone svg {
-  width: 18px;
-  height: 18px;
-  fill: var(--color-navy);
-}
+.navbar-phone svg { width: 18px; height: 18px; }
 
 .navbar-cta {
   font-size: 14px;
-  padding: 12px 24px;
+  padding: 10px 24px;
   min-height: auto;
-  letter-spacing: 1.2px;
 }
 
 @media (max-width: 640px) {
   .navbar-phone span { display: none; }
-  .navbar-cta { padding: 10px 16px; font-size: 13px; }
-  .navbar-inner { height: 64px; }
-  .navbar-logo img { height: 40px; }
+  .navbar-cta { padding: 10px 18px; font-size: 13px; }
+  .navbar-inner { height: 60px; }
+  .navbar-logo img { height: 38px; }
 }
 
 /* ============================================
-   HERO SECTION
+   HERO — Split layout
    ============================================ */
 
 .hero {
   position: relative;
-  min-height: 92vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding-top: 76px;
+  padding-top: 72px;
   overflow: hidden;
 }
 
 .hero-bg {
   position: absolute;
-  inset: 0;
-  z-index: 0;
+  inset: 0; z-index: 0;
 }
 
 .hero-bg img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(0,5,18,0.75) 0%, rgba(0,62,107,0.55) 100%);
+  background: linear-gradient(100deg, rgba(0,5,18,0.82) 0%, rgba(27,58,92,0.6) 55%, rgba(27,58,92,0.4) 100%);
   z-index: 1;
 }
 
-.hero-content {
+.hero-split {
   position: relative;
   z-index: 2;
-  max-width: 760px;
-  padding: 80px 0;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 60px;
+  align-items: center;
+  padding: 60px 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
-.hero h1 {
+.hero-left h1 {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 1.18;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.15;
   color: var(--color-white);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-.hero-sub {
-  font-family: var(--font-display);
+.hero-left .hero-sub {
   font-weight: 300;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.65;
-  color: rgba(255,255,255,0.88);
-  margin-bottom: 36px;
-  max-width: 620px;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 28px;
+  max-width: 540px;
 }
 
 .hero-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 40px;
+  gap: 10px;
+  margin-bottom: 28px;
 }
 
 .hero-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.12);
+  gap: 7px;
+  background: rgba(255,255,255,0.1);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.18);
-  padding: 10px 18px;
-  font-size: 13px;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 8px 16px;
+  border-radius: var(--pill);
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-white);
+  letter-spacing: 0.3px;
+}
+
+.hero-badge svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.hero-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 20px;
   letter-spacing: 0.5px;
 }
 
-.hero-badge svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
+.hero-phone svg { width: 22px; height: 22px; }
+.hero-phone span { font-size: 12px; font-weight: 400; opacity: 0.7; display: block; margin-top: 2px; }
+
+/* Hero Quiz Card (Q1 only on load) */
+.hero-quiz-card {
+  background: var(--color-white);
+  border-radius: 16px;
+  padding: 36px 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
 }
 
-.hero-ctas {
+.hero-quiz-card .hqc-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-green);
+  margin-bottom: 6px;
+}
+
+.hero-quiz-card h3 {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--color-dark);
+  margin-bottom: 6px;
+}
+
+.hero-quiz-card .hqc-sub {
+  font-size: 13px;
+  color: var(--color-gray-text);
+  margin-bottom: 22px;
+}
+
+.hero-quiz-card .hqc-options {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 10px;
 }
 
-@media (max-width: 768px) {
-  .hero { min-height: auto; padding-top: 64px; }
-  .hero-content { padding: 50px 0 60px; }
-  .hero h1 { font-size: 32px; }
-  .hero-sub { font-size: 16px; }
-  .hero-badge { padding: 8px 14px; font-size: 12px; }
+.hqc-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--color-light-bg);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  color: var(--color-dark);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hqc-option:hover {
+  border-color: var(--color-navy);
+  background: rgba(27,58,92,0.05);
+}
+
+.hqc-option .radio {
+  width: 20px; height: 20px;
+  border: 2px solid var(--color-steel);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.hqc-option.selected .radio {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+}
+
+.hqc-option.selected .radio::after {
+  content: '';
+  width: 7px; height: 7px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.hqc-lock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--color-steel);
+}
+
+.hqc-lock svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+@media (max-width: 900px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 40px 24px;
+  }
+  .hero-left h1 { font-size: 30px; }
+  .hero { min-height: auto; }
+  .hero-quiz-card { max-width: 480px; }
+}
+
+@media (max-width: 640px) {
+  .hero-left h1 { font-size: 26px; }
+  .hero-quiz-card { padding: 28px 20px; }
+}
+
+/* ============================================
+   QUIZ MODAL (full-screen overlay, Q2 onwards)
+   ============================================ */
+
+.quiz-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0,5,18,0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.quiz-modal.open {
+  display: flex;
+}
+
+.quiz-modal-card {
+  background: var(--color-white);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Modal progress bar */
+.qm-progress {
+  height: 5px;
+  background: rgba(27,58,92,0.1);
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+
+.qm-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-navy), var(--color-green));
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+.qm-body {
+  padding: 40px 36px;
+}
+
+.qm-step-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-pale-blue);
+  margin-bottom: 10px;
+}
+
+.qm-body h3 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--color-dark);
+  margin-bottom: 28px;
+}
+
+.qm-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qm-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--color-light-bg);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  color: var(--color-dark);
+  line-height: 1.45;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qm-option:hover {
+  border-color: var(--color-navy);
+  background: rgba(27,58,92,0.04);
+}
+
+.qm-option.selected {
+  border-color: var(--color-navy);
+  background: rgba(27,58,92,0.08);
+  font-weight: 500;
+}
+
+.qm-option .radio {
+  width: 22px; height: 22px;
+  border: 2px solid var(--color-steel);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.qm-option.selected .radio {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+}
+
+.qm-option.selected .radio::after {
+  content: '';
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.qm-lock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--color-steel);
+}
+
+.qm-lock svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* Info slides (non-question) */
+.qm-info-slide {
+  text-align: center;
+  padding: 20px 0 0;
+}
+
+.qm-info-slide h3 {
+  font-size: 28px;
+  margin-bottom: 14px;
+  color: var(--color-navy);
+}
+
+.qm-info-slide p {
+  font-size: 16px;
+  color: var(--color-gray-text);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.qm-info-slide .small {
+  font-size: 13px;
+  color: var(--color-steel);
+  margin-bottom: 28px;
+}
+
+.qm-info-slide .btn {
+  min-width: 180px;
+}
+
+/* Animation */
+.qm-animate-in {
+  animation: qmFadeIn 0.35s ease forwards;
+}
+
+@keyframes qmFadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .qm-body { padding: 28px 20px; }
+  .qm-body h3 { font-size: 20px; }
+  .quiz-modal { padding: 12px; }
+}
+
+/* ============================================
+   LOADING SCREEN
+   ============================================ */
+
+.loading-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: var(--color-navy-deep);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.loading-screen.active {
+  display: flex;
+}
+
+.loading-logo img {
+  height: 60px;
+  filter: brightness(0) invert(1);
+}
+
+.loading-bar-wrap {
+  width: 320px;
+  max-width: 80vw;
+}
+
+.loading-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-green), var(--color-blue));
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.3s linear;
+}
+
+.loading-msg {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  margin-top: 18px;
+  min-height: 24px;
+  transition: opacity 0.2s;
+}
+
+/* ============================================
+   RESULTS — Full-screen takeover
+   ============================================ */
+
+.results-fullscreen {
+  display: none;
+  min-height: 100vh;
+  background: var(--color-light-bg);
+}
+
+.results-fullscreen.active {
+  display: block;
+}
+
+.results-navbar {
+  background: var(--color-white);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+}
+
+.results-navbar img { height: 40px; }
+.results-navbar a { font-size: 14px; color: var(--color-navy); font-weight: 500; }
+
+.result-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.result-card {
+  background: var(--color-white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+}
+
+.result-header {
+  text-align: center;
+  padding: 44px 36px 32px;
+}
+
+.result-icon-circle {
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.result-icon-circle.hot { background: rgba(207,46,46,0.1); }
+.result-icon-circle.warm { background: rgba(255,188,125,0.15); }
+.result-icon-circle.cold { background: rgba(110,193,228,0.15); }
+
+.result-header h2 {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--color-dark);
+  margin-bottom: 12px;
+}
+
+.result-header p {
+  color: var(--color-gray-text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.result-content {
+  padding: 0 36px 44px;
+}
+
+.result-section {
+  margin-bottom: 32px;
+}
+
+.result-section h4 {
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--color-dark);
+  margin-bottom: 12px;
+}
+
+.result-section p, .result-section li {
+  color: var(--color-gray-text);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.result-section ul li {
+  padding: 5px 0 5px 22px;
+  position: relative;
+}
+
+.result-section ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 13px;
+  width: 7px; height: 7px;
+  background: var(--color-navy);
+  border-radius: 50%;
+}
+
+/* CTA Box inside results */
+.result-cta-box {
+  background: var(--color-navy);
+  border-radius: 12px;
+  padding: 32px 28px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result-cta-box h3 {
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--color-white);
+  margin-bottom: 6px;
+}
+
+.result-cta-box p {
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.result-phone-big {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--color-white);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.result-phone-big svg { width: 26px; height: 26px; }
+
+.result-cta-box .avail {
+  font-size: 12px;
+  color: var(--color-green);
+  font-weight: 500;
+}
+
+/* Lead capture form in results */
+.result-form {
+  background: var(--color-light-bg);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.result-form h4 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 6px;
+}
+
+.result-form .form-sub {
+  font-size: 13px;
+  color: var(--color-gray-text);
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.form-row.full { grid-template-columns: 1fr; }
+
+.form-input {
+  font-family: var(--font-display);
+  font-size: 14px;
+  padding: 13px 16px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+  background: var(--color-white);
+  color: var(--color-dark);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.form-input:focus { border-color: var(--color-navy); }
+.form-input::placeholder { color: var(--color-steel); }
+
+/* Steps */
+.result-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.result-step { text-align: center; }
+
+.result-step-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0 auto 8px;
+}
+
+.result-step p {
+  font-size: 12px;
+  color: var(--color-gray-text);
+  line-height: 1.45;
+}
+
+/* Testimonial in results */
+.result-testimonial {
+  background: var(--color-light-bg);
+  border-radius: 12px;
+  padding: 24px 28px;
+  border-left: 4px solid var(--color-pale-blue);
+}
+
+.result-testimonial blockquote {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--color-dark);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.result-testimonial cite {
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+@media (max-width: 640px) {
+  .result-header { padding: 32px 20px 24px; }
+  .result-content { padding: 0 20px 32px; }
+  .result-header h2 { font-size: 22px; }
+  .result-steps { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .result-phone-big { font-size: 22px; }
+  .result-cta-box { padding: 24px 20px; }
+  .result-form { padding: 20px; }
 }
 
 /* ============================================
@@ -336,7 +918,7 @@ ul { list-style: none; }
 
 .trust-bar {
   background: var(--color-light-bg);
-  padding: 28px 0;
+  padding: 24px 0;
   border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
@@ -355,16 +937,12 @@ ul { list-style: none; }
   font-size: 14px;
   font-weight: 500;
   color: var(--color-dark);
-  letter-spacing: 0.3px;
 }
 
-.trust-item img {
-  height: 44px;
-  width: auto;
-}
+.trust-item img { height: 44px; width: auto; }
 
 /* ============================================
-   PROBLEM-AGITATION SECTION
+   PROBLEM-AGITATION
    ============================================ */
 
 .section-problems {
@@ -377,479 +955,49 @@ ul { list-style: none; }
   margin-bottom: 60px;
 }
 
-.section-problems .section-subtitle {
-  margin: 0 auto;
-}
+.section-problems .section-subtitle { margin: 0 auto; }
 
 .problems-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+  gap: 28px;
 }
 
 .problem-card {
-  padding: 40px 36px;
+  padding: 36px 32px;
   background: var(--color-light-bg);
   border-left: 4px solid var(--color-pale-blue);
+  border-radius: 0 12px 12px 0;
   transition: all var(--transition);
 }
 
 .problem-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.07);
   border-left-color: var(--color-navy);
 }
 
 .problem-card h3 {
-  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 19px;
   color: var(--color-dark);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   line-height: 1.35;
 }
 
 .problem-card p {
   color: var(--color-gray-text);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.7;
 }
 
 @media (max-width: 768px) {
-  .problems-grid { grid-template-columns: 1fr; gap: 20px; }
-  .problem-card { padding: 28px 24px; }
+  .problems-grid { grid-template-columns: 1fr; }
   .section-problems { padding: var(--section-pad-mobile) 0; }
 }
 
 /* ============================================
-   QUIZ SECTION
-   ============================================ */
-
-.section-quiz {
-  padding: var(--section-pad) 0;
-  background: linear-gradient(180deg, var(--color-light-bg) 0%, var(--color-white) 100%);
-}
-
-.quiz-wrapper {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.quiz-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.quiz-header .section-subtitle {
-  margin: 0 auto;
-}
-
-/* Progress Bar */
-.quiz-progress {
-  margin-bottom: 40px;
-}
-
-.quiz-progress-bar {
-  width: 100%;
-  height: 6px;
-  background: rgba(0,62,107,0.1);
-  overflow: hidden;
-  position: relative;
-}
-
-.quiz-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-navy), var(--color-blue));
-  transition: width 0.5s ease;
-  width: 0%;
-}
-
-.quiz-progress-text {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-steel);
-  letter-spacing: 0.5px;
-}
-
-/* Quiz Card */
-.quiz-card {
-  background: var(--color-white);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.06);
-  padding: 48px 40px;
-  min-height: 420px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.quiz-question {
-  display: none;
-  flex-direction: column;
-  animation: fadeIn 0.35s ease;
-}
-
-.quiz-question.active {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.quiz-question-number {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-pale-blue);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.quiz-question h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 1.35;
-  color: var(--color-dark);
-  margin-bottom: 32px;
-}
-
-.quiz-options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.quiz-option {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
-  background: var(--color-light-bg);
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--color-dark);
-  line-height: 1.5;
-  text-align: left;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.quiz-option:hover {
-  border-color: var(--color-navy);
-  background: rgba(0,62,107,0.04);
-}
-
-.quiz-option.selected {
-  border-color: var(--color-navy);
-  background: rgba(0,62,107,0.08);
-  font-weight: 500;
-}
-
-.quiz-option-radio {
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--color-steel);
-  border-radius: 50%;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.quiz-option.selected .quiz-option-radio {
-  border-color: var(--color-navy);
-  background: var(--color-navy);
-}
-
-.quiz-option.selected .quiz-option-radio::after {
-  content: '';
-  width: 8px;
-  height: 8px;
-  background: var(--color-white);
-  border-radius: 50%;
-}
-
-.quiz-confidential {
-  margin-top: 28px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--color-steel);
-}
-
-.quiz-confidential svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-@media (max-width: 768px) {
-  .quiz-card { padding: 32px 20px; min-height: 360px; }
-  .quiz-question h3 { font-size: 20px; }
-  .section-quiz { padding: var(--section-pad-mobile) 0; }
-}
-
-/* ============================================
-   RESULTS PAGES
-   ============================================ */
-
-.results-page {
-  display: none;
-  animation: fadeIn 0.5s ease;
-}
-
-.results-page.active {
-  display: block;
-}
-
-.result-hero {
-  text-align: center;
-  padding: 48px 40px 36px;
-}
-
-.result-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 24px;
-}
-
-.result-icon.hot { background: rgba(207,46,46,0.1); }
-.result-icon.warm { background: rgba(255,188,125,0.15); }
-.result-icon.cold { background: rgba(110,193,228,0.15); }
-
-.result-hero h2 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 28px;
-  line-height: 1.3;
-  color: var(--color-dark);
-  margin-bottom: 16px;
-}
-
-.result-hero p {
-  color: var(--color-gray-text);
-  font-size: 16px;
-  line-height: 1.7;
-  max-width: 560px;
-  margin: 0 auto;
-}
-
-.result-body {
-  padding: 0 40px 48px;
-}
-
-.result-section {
-  margin-bottom: 36px;
-}
-
-.result-section h4 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 18px;
-  color: var(--color-dark);
-  margin-bottom: 14px;
-}
-
-.result-section p, .result-section li {
-  color: var(--color-gray-text);
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.result-section ul {
-  padding-left: 0;
-}
-
-.result-section ul li {
-  padding: 6px 0 6px 24px;
-  position: relative;
-}
-
-.result-section ul li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 14px;
-  width: 8px;
-  height: 8px;
-  background: var(--color-navy);
-  border-radius: 50%;
-}
-
-/* CTA Boxes */
-.result-cta-box {
-  background: var(--color-navy);
-  padding: 36px 32px;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.result-cta-box h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 22px;
-  color: var(--color-white);
-  margin-bottom: 8px;
-}
-
-.result-cta-box p {
-  color: rgba(255,255,255,0.75);
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.result-phone-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 28px;
-  color: var(--color-white);
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-}
-
-.result-phone-link svg {
-  width: 28px;
-  height: 28px;
-}
-
-.result-cta-box .available {
-  font-size: 13px;
-  color: var(--color-green);
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-/* Inline form */
-.result-form {
-  background: var(--color-light-bg);
-  padding: 32px;
-  margin-bottom: 24px;
-}
-
-.result-form h4 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-dark);
-  margin-bottom: 18px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.form-row.full {
-  grid-template-columns: 1fr;
-}
-
-.form-input {
-  font-family: var(--font-display);
-  font-size: 15px;
-  padding: 14px 16px;
-  border: 1px solid rgba(0,0,0,0.12);
-  background: var(--color-white);
-  color: var(--color-dark);
-  outline: none;
-  transition: border-color 0.2s;
-  width: 100%;
-}
-
-.form-input:focus {
-  border-color: var(--color-navy);
-}
-
-.form-input::placeholder {
-  color: var(--color-steel);
-}
-
-/* Result steps */
-.result-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin: 24px 0;
-}
-
-.result-step {
-  text-align: center;
-}
-
-.result-step-number {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-navy);
-  color: var(--color-white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 16px;
-  margin: 0 auto 10px;
-}
-
-.result-step p {
-  font-size: 13px;
-  color: var(--color-gray-text);
-  line-height: 1.5;
-}
-
-/* Result testimonial */
-.result-testimonial {
-  background: var(--color-light-bg);
-  padding: 28px 32px;
-  border-left: 4px solid var(--color-pale-blue);
-  margin-top: 28px;
-}
-
-.result-testimonial blockquote {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-style: italic;
-  color: var(--color-dark);
-  line-height: 1.7;
-  margin-bottom: 12px;
-}
-
-.result-testimonial cite {
-  font-style: normal;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-navy);
-}
-
-@media (max-width: 768px) {
-  .result-hero { padding: 32px 20px 24px; }
-  .result-body { padding: 0 20px 36px; }
-  .result-hero h2 { font-size: 24px; }
-  .result-steps { grid-template-columns: 1fr 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .result-phone-link { font-size: 22px; }
-  .result-cta-box { padding: 28px 20px; }
-}
-
-/* ============================================
-   FACILITY SHOWCASE
+   FACILITY
    ============================================ */
 
 .section-facility {
@@ -862,20 +1010,19 @@ ul { list-style: none; }
   margin-bottom: 48px;
 }
 
-.section-facility .section-subtitle {
-  margin: 0 auto;
-}
+.section-facility .section-subtitle { margin: 0 auto; }
 
 .facility-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 12px;
 }
 
 .facility-item {
   position: relative;
   overflow: hidden;
   aspect-ratio: 4/3;
+  border-radius: 10px;
 }
 
 .facility-item.large {
@@ -885,27 +1032,22 @@ ul { list-style: none; }
 }
 
 .facility-item img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.6s ease;
 }
 
-.facility-item:hover img {
-  transform: scale(1.05);
-}
+.facility-item:hover img { transform: scale(1.05); }
 
 .facility-item .caption {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px 18px;
+  bottom: 0; left: 0; right: 0;
+  padding: 14px 16px;
   background: linear-gradient(transparent, rgba(0,5,18,0.7));
-  color: var(--color-white);
+  color: #fff;
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.5px;
+  border-radius: 0 0 10px 10px;
 }
 
 @media (max-width: 768px) {
@@ -928,9 +1070,7 @@ ul { list-style: none; }
   margin-bottom: 60px;
 }
 
-.section-approach .section-subtitle {
-  margin: 0 auto;
-}
+.section-approach .section-subtitle { margin: 0 auto; }
 
 .approach-columns {
   display: grid;
@@ -939,7 +1079,6 @@ ul { list-style: none; }
 }
 
 .approach-col h3 {
-  font-family: var(--font-display);
   font-weight: 600;
   font-size: 22px;
   color: var(--color-dark);
@@ -949,15 +1088,9 @@ ul { list-style: none; }
   display: inline-block;
 }
 
-.approach-col.holistic h3 {
-  border-bottom-color: var(--color-green);
-}
+.approach-col.holistic h3 { border-bottom-color: var(--color-green); }
 
-.approach-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+.approach-list { display: flex; flex-direction: column; gap: 14px; }
 
 .approach-item {
   display: flex;
@@ -968,12 +1101,7 @@ ul { list-style: none; }
   line-height: 1.6;
 }
 
-.approach-item svg {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
+.approach-item svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
 
 .approach-note {
   text-align: center;
@@ -1000,23 +1128,21 @@ ul { list-style: none; }
   background: var(--color-white);
 }
 
-.section-why .section-header {
-  text-align: center;
-  margin-bottom: 60px;
-}
+.section-why .section-header { text-align: center; margin-bottom: 60px; }
 
 .why-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  gap: 24px;
 }
 
 .why-card {
-  padding: 36px 28px;
+  padding: 32px 24px;
   background: var(--color-light-bg);
   text-align: center;
   transition: all var(--transition);
   border-bottom: 4px solid transparent;
+  border-radius: 12px;
 }
 
 .why-card:hover {
@@ -1026,27 +1152,22 @@ ul { list-style: none; }
 }
 
 .why-card-icon {
-  width: 64px;
-  height: 64px;
-  background: rgba(0,62,107,0.08);
+  width: 60px; height: 60px;
+  background: rgba(27,58,92,0.08);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 0 auto 18px;
 }
 
-.why-card-icon svg {
-  width: 28px;
-  height: 28px;
-}
+.why-card-icon svg { width: 26px; height: 26px; }
 
 .why-card h3 {
-  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 18px;
+  font-size: 17px;
   color: var(--color-dark);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   line-height: 1.35;
 }
 
@@ -1068,55 +1189,38 @@ ul { list-style: none; }
 .section-testimonials {
   padding: var(--section-pad) 0;
   background: var(--color-navy);
-  color: var(--color-white);
+  color: #fff;
 }
 
-.section-testimonials .section-eyebrow {
-  color: var(--color-pale-blue);
-}
-
-.section-testimonials .section-title {
-  color: var(--color-white);
-}
-
-.section-testimonials .section-header {
-  text-align: center;
-  margin-bottom: 56px;
-}
+.section-testimonials .section-eyebrow { color: var(--color-pale-blue); }
+.section-testimonials .section-title { color: #fff; }
+.section-testimonials .section-header { text-align: center; margin-bottom: 56px; }
 
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+  gap: 24px;
 }
 
 .testimonial-card {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
-  padding: 32px 28px;
+  border-radius: 12px;
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
 }
 
-.testimonial-stars {
-  display: flex;
-  gap: 3px;
-  margin-bottom: 18px;
-}
-
-.testimonial-stars svg {
-  width: 18px;
-  height: 18px;
-  fill: var(--color-orange);
-}
+.testimonial-stars { display: flex; gap: 3px; margin-bottom: 16px; }
+.testimonial-stars svg { width: 17px; height: 17px; fill: var(--color-orange); }
 
 .testimonial-card blockquote {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.75;
   color: rgba(255,255,255,0.85);
   font-style: italic;
   flex: 1;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .testimonial-author {
@@ -1124,41 +1228,32 @@ ul { list-style: none; }
   align-items: center;
   gap: 12px;
   border-top: 1px solid rgba(255,255,255,0.1);
-  padding-top: 16px;
+  padding-top: 14px;
 }
 
 .testimonial-avatar {
-  width: 44px;
-  height: 44px;
+  width: 42px; height: 42px;
   border-radius: 50%;
   background: rgba(255,255,255,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 16px;
-  color: var(--color-white);
+  font-size: 15px;
+  color: #fff;
   flex-shrink: 0;
 }
 
-.testimonial-name {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--color-white);
-}
-
-.testimonial-meta {
-  font-size: 12px;
-  color: var(--color-pale-blue);
-}
+.testimonial-name { font-weight: 600; font-size: 14px; color: #fff; }
+.testimonial-meta { font-size: 12px; color: var(--color-pale-blue); }
 
 @media (max-width: 900px) {
-  .testimonials-grid { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+  .testimonials-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
   .section-testimonials { padding: var(--section-pad-mobile) 0; }
 }
 
 /* ============================================
-   INSURANCE SECTION
+   INSURANCE
    ============================================ */
 
 .section-insurance {
@@ -1172,9 +1267,7 @@ ul { list-style: none; }
   margin: 0 auto;
 }
 
-.insurance-inner .section-subtitle {
-  margin: 0 auto 32px;
-}
+.insurance-inner .section-subtitle { margin: 0 auto 32px; }
 
 .insurance-badges {
   display: flex;
@@ -1184,11 +1277,7 @@ ul { list-style: none; }
   margin-top: 32px;
 }
 
-.insurance-badges img {
-  height: 60px;
-  width: auto;
-  opacity: 0.85;
-}
+.insurance-badges img { height: 60px; width: auto; opacity: 0.85; }
 
 @media (max-width: 768px) {
   .section-insurance { padding: var(--section-pad-mobile) 0; }
@@ -1205,10 +1294,9 @@ ul { list-style: none; }
 }
 
 .cta-banner-content h2 {
-  font-family: var(--font-display);
   font-weight: 600;
   font-size: 34px;
-  color: var(--color-white);
+  color: #fff;
   margin-bottom: 14px;
   line-height: 1.25;
 }
@@ -1250,24 +1338,16 @@ ul { list-style: none; }
   filter: brightness(0) invert(1);
 }
 
-.footer-brand p {
-  font-size: 14px;
-  line-height: 1.7;
-  max-width: 320px;
-}
+.footer-brand p { font-size: 14px; line-height: 1.7; max-width: 320px; }
 
 .footer-col h4 {
-  font-family: var(--font-display);
   font-weight: 600;
   font-size: 15px;
-  color: var(--color-white);
+  color: #fff;
   margin-bottom: 16px;
-  letter-spacing: 0.5px;
 }
 
-.footer-col ul li {
-  margin-bottom: 8px;
-}
+.footer-col ul li { margin-bottom: 8px; }
 
 .footer-col ul li a {
   font-size: 14px;
@@ -1275,9 +1355,7 @@ ul { list-style: none; }
   transition: color 0.2s;
 }
 
-.footer-col ul li a:hover {
-  color: var(--color-pale-blue);
-}
+.footer-col ul li a:hover { color: var(--color-pale-blue); }
 
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -1310,16 +1388,10 @@ ul { list-style: none; }
 /* ============================================
    UTILITY
    ============================================ */
-
 .text-center { text-align: center; }
 .mt-12 { margin-top: 12px; }
 .mt-24 { margin-top: 24px; }
-.mb-0 { margin-bottom: 0; }
-
-/* Smooth scroll offset for fixed nav */
-[id] {
-  scroll-margin-top: 90px;
-}
+[id] { scroll-margin-top: 80px; }
 </style>
 </head>
 <body>
@@ -1337,21 +1409,22 @@ ul { list-style: none; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
         <span>(801) 259-7533</span>
       </a>
-      <a href="#quiz" class="btn btn-primary navbar-cta">Free Assessment</a>
+      <a href="#quiz" class="btn btn-primary navbar-cta" onclick="event.preventDefault(); document.querySelector('.hero-quiz-card').scrollIntoView({behavior:'smooth',block:'center'});">Free Assessment</a>
     </div>
   </div>
 </nav>
 
 <!-- ===========================
-     HERO
+     HERO — Split layout
      =========================== -->
-<section class="hero">
+<section class="hero" id="top">
   <div class="hero-bg">
-    <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/image-min-scaled.jpg" alt="Wasatch Mountains at the base of Pinnacle Recovery Center" width="2560" height="1707" loading="eager">
+    <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/image-min-scaled.jpg" alt="Wasatch Mountains — Pinnacle Recovery Center" width="2560" height="1707" loading="eager">
   </div>
   <div class="hero-overlay"></div>
-  <div class="container">
-    <div class="hero-content">
+  <div class="hero-split">
+    <!-- LEFT -->
+    <div class="hero-left">
       <h1>Find Your Path to Lasting Recovery in Utah's Mountain Sanctuary</h1>
       <p class="hero-sub">Intimate setting. Maximum 16 clients. Evidence-based care blended with holistic healing at the base of the Wasatch Mountains.</p>
       <div class="hero-badges">
@@ -1364,7 +1437,7 @@ ul { list-style: none; }
           Insurance Accepted
         </div>
         <div class="hero-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2m8-4a4 4 0 100-8 4 4 0 000 8zm8 12v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2m8-4a4 4 0 100-8 4 4 0 000 8z"/></svg>
           Max 16 Clients
         </div>
         <div class="hero-badge">
@@ -1372,17 +1445,82 @@ ul { list-style: none; }
           Luxury Facility
         </div>
       </div>
-      <div class="hero-ctas">
-        <a href="#quiz" class="btn btn-green">Take Your Free Assessment</a>
-        <a href="tel:+18012597533" class="btn btn-outline">Call (801) 259-7533</a>
+      <a href="tel:+18012597533" class="hero-phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        (801) 259-7533
+      </a>
+    </div>
+    <!-- RIGHT — Quiz card with Q1 -->
+    <div class="hero-quiz-card" id="heroQuizCard">
+      <div class="hqc-eyebrow">Free Confidential Assessment</div>
+      <h3>Who is this assessment for?</h3>
+      <p class="hqc-sub">Takes 2 minutes. 100% confidential.</p>
+      <div class="hqc-options" id="heroQ1Options">
+        <button class="hqc-option" data-value="Myself" onclick="window.PQ.startQuiz(this)">
+          <span class="radio"></span>
+          <span>Myself</span>
+        </button>
+        <button class="hqc-option" data-value="A loved one" onclick="window.PQ.startQuiz(this)">
+          <span class="radio"></span>
+          <span>A loved one</span>
+        </button>
+        <button class="hqc-option" data-value="Not sure yet" onclick="window.PQ.startQuiz(this)">
+          <span class="radio"></span>
+          <span>Not sure yet</span>
+        </button>
+      </div>
+      <div class="hqc-lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Your answers are 100% confidential
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===========================
-     TRUST BAR
+     QUIZ MODAL (full-screen, Q2 onwards)
      =========================== -->
+<div class="quiz-modal" id="quizModal">
+  <div class="quiz-modal-card" id="quizModalCard">
+    <div class="qm-progress"><div class="qm-progress-fill" id="qmProgressFill"></div></div>
+    <div class="qm-body" id="qmBody">
+      <!-- Rendered dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- ===========================
+     LOADING SCREEN
+     =========================== -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-logo">
+    <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/logo.png" alt="Pinnacle Recovery" width="204" height="180">
+  </div>
+  <div class="loading-bar-wrap">
+    <div class="loading-bar"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+    <div class="loading-msg" id="loadingMsg">Reviewing your responses...</div>
+  </div>
+</div>
+
+<!-- ===========================
+     RESULTS (full-screen takeover)
+     =========================== -->
+<div class="results-fullscreen" id="resultsScreen">
+  <div class="results-navbar">
+    <a href="https://pinnaclerecoveryut.com/"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/logo.png" alt="Pinnacle Recovery" height="40"></a>
+    <a href="tel:+18012597533">(801) 259-7533</a>
+  </div>
+  <div class="result-container" id="resultContainer">
+    <!-- Rendered dynamically by JS -->
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE CONTENT (below hero)
+     =========================== -->
+<div class="page-content" id="pageContent">
+
+<!-- TRUST BAR -->
 <div class="trust-bar">
   <div class="container">
     <div class="trust-bar-inner">
@@ -1392,17 +1530,15 @@ ul { list-style: none; }
       <div class="trust-item">
         <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/image-4.png" alt="LegitScript Certified" width="100" height="100">
       </div>
-      <div class="trust-item" style="font-size:13px; color:var(--color-navy); font-weight:600; letter-spacing:0.5px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div class="trust-item" style="font-size:13px; color:var(--color-navy); font-weight:600;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         Founded 2015 &bull; Holladay, Utah
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===========================
-     PROBLEM-AGITATION
-     =========================== -->
+<!-- PROBLEM-AGITATION -->
 <section class="section-problems" id="why">
   <div class="container">
     <div class="section-header">
@@ -1431,261 +1567,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ===========================
-     QUIZ SECTION
-     =========================== -->
-<section class="section-quiz" id="quiz">
-  <div class="container">
-    <div class="quiz-wrapper">
-      <div class="quiz-header">
-        <p class="section-eyebrow">Confidential assessment</p>
-        <h2 class="section-title">Find Your Personalized Treatment Path</h2>
-        <p class="section-subtitle">Answer 12 quick questions to receive your custom recovery recommendation. Completely confidential — takes about 2 minutes.</p>
-      </div>
-
-      <!-- Progress -->
-      <div class="quiz-progress" id="quizProgress">
-        <div class="quiz-progress-bar">
-          <div class="quiz-progress-fill" id="progressFill"></div>
-        </div>
-        <div class="quiz-progress-text">
-          <span id="progressLabel">Question 1 of 12</span>
-          <span id="progressPercent">0%</span>
-        </div>
-      </div>
-
-      <!-- Quiz Card -->
-      <div class="quiz-card" id="quizCard">
-        <!-- Questions will be dynamically rendered here -->
-      </div>
-
-      <!-- Results Container -->
-      <div id="resultsContainer" style="display:none;">
-        <!-- HOT LEAD RESULT -->
-        <div class="results-page" id="resultHot">
-          <div class="quiz-card" style="min-height:auto;">
-            <div class="result-hero">
-              <div class="result-icon hot">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cf2e2e" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-              </div>
-              <h2>You Need Support Right Now — We're Here for You</h2>
-              <p id="hotSummary">Based on your answers, you're dealing with a serious situation that requires comprehensive, immediate care in a safe environment.</p>
-            </div>
-            <div class="result-body">
-              <div class="result-section">
-                <p>The symptoms you described require medical supervision. Our 24/7 medically-supervised detox and residential program provides the safety and support you need to begin healing — in an intimate setting where you'll never feel like a number.</p>
-              </div>
-
-              <div class="result-section">
-                <h4>What You'll Receive at Pinnacle</h4>
-                <ul>
-                  <li>One of maximum 16 clients — our staff knows your name, your story, your goals</li>
-                  <li>2 hours of individual therapy + 30 hours of group therapy weekly</li>
-                  <li>Full psychiatric and medical evaluation within 24 hours</li>
-                  <li>Personalized treatment plan designed specifically for you</li>
-                  <li>Beautiful mountain setting that aids in healing — not institutional</li>
-                </ul>
-              </div>
-
-              <div class="result-cta-box">
-                <h3>Speak with Our Admissions Team Now</h3>
-                <a href="tel:+18012597533" class="result-phone-link">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                  (801) 259-7533
-                </a>
-                <p class="available">Available 24/7 — Confidential, No Obligation</p>
-              </div>
-
-              <div class="result-form">
-                <h4>Or Verify Your Insurance Coverage</h4>
-                <p style="font-size:14px; color:var(--color-gray-text); margin-bottom:16px;">Get results in minutes. No obligation.</p>
-                <div class="form-row">
-                  <input type="text" class="form-input" placeholder="First Name" id="hotName">
-                  <input type="tel" class="form-input" placeholder="Phone Number" id="hotPhone">
-                </div>
-                <div class="form-row full">
-                  <input type="text" class="form-input" placeholder="Insurance Provider" id="hotInsurance">
-                </div>
-                <button class="btn btn-primary mt-12" style="width:100%;" onclick="submitForm('hot')">Verify My Coverage</button>
-              </div>
-
-              <div class="result-section">
-                <h4>What Happens Next</h4>
-                <div class="result-steps">
-                  <div class="result-step">
-                    <div class="result-step-number">1</div>
-                    <p>Call now or submit your information above</p>
-                  </div>
-                  <div class="result-step">
-                    <div class="result-step-number">2</div>
-                    <p>Brief 10-15 min confidential assessment</p>
-                  </div>
-                  <div class="result-step">
-                    <div class="result-step-number">3</div>
-                    <p>We'll explain your options and answer all questions</p>
-                  </div>
-                  <div class="result-step">
-                    <div class="result-step-number">4</div>
-                    <p>Admission can happen within 24-48 hours</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="result-testimonial">
-                <blockquote>"Pinnacle Recovery in Utah was more than words or stars can ever describe. The staff is very accommodating and passionate about the work they do. I learned to change my behaviors and thinking through spirituality, meditation, therapy, and group sessions. Pinnacle has saved my life and I found a new life that I didn't even know was possible."</blockquote>
-                <cite>— Scott, Pinnacle Alumni</cite>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WARM LEAD RESULT -->
-        <div class="results-page" id="resultWarm">
-          <div class="quiz-card" style="min-height:auto;">
-            <div class="result-hero">
-              <div class="result-icon warm">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e6960a" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              </div>
-              <h2>Let's Create Your Personalized Recovery Plan</h2>
-              <p id="warmSummary">You're ready to make a change, and that takes courage. Based on your answers, you're in the right place to explore your options with a team that genuinely cares.</p>
-            </div>
-            <div class="result-body">
-              <div class="result-section">
-                <h4>Why Pinnacle Is Different</h4>
-                <p>Unlike large facilities where you're one of 50+ clients, at Pinnacle you're one of 16 maximum. This intimate environment allows us to customize every aspect of your treatment, build real relationships (not transactional care), and create a family-like support system in Utah's mountain setting.</p>
-              </div>
-
-              <div class="result-section" id="warmPersonalized">
-                <!-- Dynamic content based on quiz answers -->
-              </div>
-
-              <div class="result-cta-box">
-                <h3>Schedule Your Free Clinical Assessment</h3>
-                <p>30-minute confidential call with our admissions coordinator. No pressure — just clarity.</p>
-                <a href="tel:+18012597533" class="result-phone-link">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                  (801) 259-7533
-                </a>
-                <p class="available">We'll answer all your questions — no obligation</p>
-              </div>
-
-              <div class="result-form">
-                <h4>Or Download Our Complete Treatment Guide</h4>
-                <p style="font-size:14px; color:var(--color-gray-text); margin-bottom:16px;">Learn what to expect, see facility photos, understand your options.</p>
-                <div class="form-row">
-                  <input type="text" class="form-input" placeholder="First Name" id="warmName">
-                  <input type="email" class="form-input" placeholder="Email Address" id="warmEmail">
-                </div>
-                <button class="btn btn-primary mt-12" style="width:100%;" onclick="submitForm('warm')">Send Me the Free Guide</button>
-              </div>
-
-              <div class="result-section">
-                <h4>What's Inside the Guide</h4>
-                <ul>
-                  <li>Residential vs IOP programs explained in plain language</li>
-                  <li>What a typical day at Pinnacle looks like</li>
-                  <li>Insurance and payment options breakdown</li>
-                  <li>Full facility tour photos</li>
-                  <li>Real stories from our alumni</li>
-                </ul>
-              </div>
-
-              <div class="result-section">
-                <h4>What Happens on the Assessment Call</h4>
-                <div class="result-steps">
-                  <div class="result-step">
-                    <div class="result-step-number">1</div>
-                    <p>We learn about your situation</p>
-                  </div>
-                  <div class="result-step">
-                    <div class="result-step-number">2</div>
-                    <p>Explain which program is the best fit</p>
-                  </div>
-                  <div class="result-step">
-                    <div class="result-step-number">3</div>
-                    <p>Answer questions about insurance and cost</p>
-                  </div>
-                  <div class="result-step">
-                    <div class="result-step-number">4</div>
-                    <p>If ready, begin the admission process</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="result-testimonial">
-                <blockquote>"My wife found Pinnacle on Google reviews and I took a leap of faith. The staff is very accommodating and personable. The house is like a family and everyone that works here is very passionate about the work they do. I learned to be vulnerable with my peers. It is up to you to give it 110% every day."</blockquote>
-                <cite>— Scott, Pinnacle Alumni</cite>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COLD LEAD RESULT -->
-        <div class="results-page" id="resultCold">
-          <div class="quiz-card" style="min-height:auto;">
-            <div class="result-hero">
-              <div class="result-icon cold">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6EC1E4" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-              </div>
-              <h2>Understanding Your Options for Recovery</h2>
-              <p>You're taking an important first step by researching treatment options. Recovery starts with information, and we're here to help you understand what's available.</p>
-            </div>
-            <div class="result-body">
-              <div class="result-section">
-                <h4>Treatment Isn't One-Size-Fits-All</h4>
-                <p>At Pinnacle Recovery, we offer a range of programs designed to meet you where you are:</p>
-                <ul>
-                  <li><strong>Residential Treatment</strong> (30-90 days) — Live at our facility with 24/7 care and support</li>
-                  <li><strong>Intensive Outpatient Program</strong> (3 evenings/week) — Continue daily life while getting structured support</li>
-                  <li><strong>Medically-Supervised Detox</strong> — Safe withdrawal management under 24/7 medical supervision</li>
-                  <li><strong>Dual Diagnosis Care</strong> — Treat addiction and co-occurring mental health together</li>
-                  <li><strong>Aftercare &amp; Alumni Support</strong> — Recovery doesn't end at discharge</li>
-                </ul>
-              </div>
-
-              <div class="result-section">
-                <h4>What Makes Treatment Successful</h4>
-                <p>Research shows the most effective programs combine:</p>
-                <ul>
-                  <li>Evidence-based therapies (CBT, EMDR, trauma-informed care)</li>
-                  <li>Holistic healing (yoga, meditation, nutritional support, nature therapy)</li>
-                  <li>Personalized treatment plans — not cookie-cutter approaches</li>
-                  <li>Small client-to-staff ratios for individual attention</li>
-                  <li>Aftercare support — because recovery is a lifelong journey</li>
-                </ul>
-              </div>
-
-              <div class="result-form">
-                <h4>Download Our Free Recovery Guide</h4>
-                <p style="font-size:14px; color:var(--color-gray-text); margin-bottom:16px;">A comprehensive guide to understanding addiction treatment options in Utah.</p>
-                <div class="form-row">
-                  <input type="text" class="form-input" placeholder="First Name" id="coldName">
-                  <input type="email" class="form-input" placeholder="Email Address" id="coldEmail">
-                </div>
-                <button class="btn btn-primary mt-12" style="width:100%;" onclick="submitForm('cold')">Download Free Guide</button>
-              </div>
-
-              <div class="result-section" style="text-align:center; margin-top:32px;">
-                <h4>Additional Resources</h4>
-                <p style="margin-bottom:16px;">SAMHSA National Helpline: <a href="tel:18006624357" style="color:var(--color-navy); font-weight:600;">1-800-662-4357</a><br><span style="font-size:13px; color:var(--color-steel);">Free, confidential, 24/7 support</span></p>
-                <a href="https://pinnaclerecoveryut.com/programs/" class="btn btn-outline-dark" target="_blank">Browse Our Programs</a>
-              </div>
-
-              <div class="result-section" style="text-align:center; margin-top:24px; padding: 28px; background: var(--color-light-bg);">
-                <p style="color:var(--color-dark); font-size:15px;">When you're ready to discuss your specific situation, we're here. <br>Call us at <a href="tel:+18012597533" style="color:var(--color-navy); font-weight:600;">(801) 259-7533</a> or schedule a no-pressure consultation.<br><strong>We'll meet you where you are.</strong></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===========================
-     FACILITY SHOWCASE
-     =========================== -->
+<!-- FACILITY SHOWCASE -->
 <section class="section-facility" id="facility">
   <div class="container">
     <div class="section-header">
@@ -1726,9 +1608,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ===========================
-     TREATMENT APPROACH
-     =========================== -->
+<!-- TREATMENT APPROACH -->
 <section class="section-approach" id="approach">
   <div class="container">
     <div class="section-header">
@@ -1740,67 +1620,25 @@ ul { list-style: none; }
       <div class="approach-col clinical">
         <h3>Clinical Excellence</h3>
         <div class="approach-list">
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            24/7 medical supervision and support
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Full psychiatric evaluation on admission
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Licensed therapists (master's level+)
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            2 hours individual therapy weekly
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            30 hours group therapy weekly
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            CBT, EMDR, trauma-informed care
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Medication-assisted treatment (if needed)
-          </div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>24/7 medical supervision and support</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Full psychiatric evaluation on admission</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Licensed therapists (master's level+)</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>2 hours individual therapy weekly</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>30 hours group therapy weekly</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>CBT, EMDR, trauma-informed care</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Medication-assisted treatment (if needed)</div>
         </div>
       </div>
       <div class="approach-col holistic">
         <h3>Holistic Therapies</h3>
         <div class="approach-list">
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Yoga &amp; guided meditation
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Therapeutic acupuncture
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Sound bowl therapy
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Nutritional counseling &amp; five-star meals
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Daily gym sessions
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Outdoor experiential therapy (hiking, paddleboarding, snowshoeing)
-          </div>
-          <div class="approach-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            Weekly softball &amp; Sunday CrossFit
-          </div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Yoga &amp; guided meditation</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Therapeutic acupuncture</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Sound bowl therapy</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Nutritional counseling &amp; five-star meals</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Daily gym sessions</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Outdoor experiential therapy (hiking, paddleboarding, snowshoeing)</div>
+          <div class="approach-item"><svg viewBox="0 0 24 24" fill="none" stroke="#61CE70" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Weekly softball &amp; Sunday CrossFit</div>
         </div>
       </div>
     </div>
@@ -1808,9 +1646,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ===========================
-     WHY PINNACLE
-     =========================== -->
+<!-- WHY PINNACLE -->
 <section class="section-why" id="why-pinnacle">
   <div class="container">
     <div class="section-header">
@@ -1819,44 +1655,32 @@ ul { list-style: none; }
     </div>
     <div class="why-grid">
       <div class="why-card">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2m8-4a4 4 0 100-8 4 4 0 000 8zm8 12v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
+        <div class="why-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2m8-4a4 4 0 100-8 4 4 0 000 8z"/></svg></div>
         <h3>Maximum 16 Clients at a Time</h3>
         <p>You're not a number. In our intimate setting, our staff knows your name, your story, and your goals. Personalized attention isn't a luxury — it's our standard.</p>
       </div>
       <div class="why-card">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M3 21l4-4m0 0l4 4m-4-4V3m14 18l-4-4m0 0l-4 4m4-4V3"/><path d="M14 3l4 3-4 3m-4 0L6 6l4-3"/></svg>
-        </div>
+        <div class="why-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11"/></svg></div>
         <h3>Utah's Wasatch Mountains</h3>
         <p>Surrounded by breathtaking mountain scenery. Healing happens naturally in nature. Our trails, outdoor therapy, and peaceful setting aid your recovery.</p>
       </div>
       <div class="why-card">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
+        <div class="why-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
         <h3>Luxury Meets Medical Excellence</h3>
         <p>Custom-built 10,000 sq ft facility. Private rooms with ensuite bathrooms. Five-star chef-prepared meals. You deserve comfort while you heal.</p>
       </div>
       <div class="why-card">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4.03 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4.03-3-9s1.34-9 3-9m-9 9a9 9 0 019-9"/></svg>
-        </div>
+        <div class="why-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4.03 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4.03-3-9s1.34-9 3-9"/></svg></div>
         <h3>Dual Diagnosis Specialists</h3>
         <p>We treat addiction AND co-occurring mental health. Depression, anxiety, PTSD, bipolar — we address root causes, not just symptoms.</p>
       </div>
       <div class="why-card">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-        </div>
+        <div class="why-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
         <h3>Alumni for Life</h3>
-        <p>Our alumni stay connected through monthly activities, a softball team, ongoing support groups, and a community that never stops caring. Recovery doesn't end at discharge.</p>
+        <p>Our alumni stay connected through monthly activities, a softball team, ongoing support groups, and a community that never stops caring.</p>
       </div>
       <div class="why-card">
-        <div class="why-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#003E6B" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
+        <div class="why-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1B3A5C" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h3>Joint Commission Accredited</h3>
         <p>We meet the highest national standards for treatment quality, medical protocols, and client safety. Your wellbeing is never compromised.</p>
       </div>
@@ -1864,9 +1688,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ===========================
-     TESTIMONIALS
-     =========================== -->
+<!-- TESTIMONIALS -->
 <section class="section-testimonials" id="stories">
   <div class="container">
     <div class="section-header">
@@ -1875,69 +1697,31 @@ ul { list-style: none; }
     </div>
     <div class="testimonials-grid">
       <div class="testimonial-card">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
+        <div class="testimonial-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
         <blockquote>"Pinnacle Recovery in Utah was more than these words or stars can ever describe. The staff is very accommodating to our needs and very personable. The house is like a family and everyone that works here is very passionate about the work they do. Pinnacle has saved my life and I found a new life I didn't even know was possible."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">S</div>
-          <div>
-            <div class="testimonial-name">Scott</div>
-            <div class="testimonial-meta">Pinnacle Alumni — 2021</div>
-          </div>
-        </div>
+        <div class="testimonial-author"><div class="testimonial-avatar">S</div><div><div class="testimonial-name">Scott</div><div class="testimonial-meta">Pinnacle Alumni — 2021</div></div></div>
       </div>
       <div class="testimonial-card">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
+        <div class="testimonial-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
         <blockquote>"I am blessed to have been able to attend Pinnacle Recovery. It literally saved my life. I not only got sober but it taught me how to handle tough situations in a positive manner. I grew into a strong woman and built up my self-esteem. The staff are amazing and truly care about you."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">A</div>
-          <div>
-            <div class="testimonial-name">Alumni</div>
-            <div class="testimonial-meta">Pinnacle Recovery Graduate</div>
-          </div>
-        </div>
+        <div class="testimonial-author"><div class="testimonial-avatar">A</div><div><div class="testimonial-name">Alumni</div><div class="testimonial-meta">Pinnacle Recovery Graduate</div></div></div>
       </div>
       <div class="testimonial-card">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
+        <div class="testimonial-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
         <blockquote>"The therapists really care about their clients as they are recovering themselves and encourage us to be vulnerable with our peers and ourselves. I learned to change my behaviors and thinking through spirituality, meditation, therapy, and the philosophy that Pinnacle believes in."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">R</div>
-          <div>
-            <div class="testimonial-name">Recovery Alumni</div>
-            <div class="testimonial-meta">Pinnacle Recovery Graduate</div>
-          </div>
-        </div>
+        <div class="testimonial-author"><div class="testimonial-avatar">R</div><div><div class="testimonial-name">Recovery Alumni</div><div class="testimonial-meta">Pinnacle Recovery Graduate</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===========================
-     INSURANCE
-     =========================== -->
+<!-- INSURANCE -->
 <section class="section-insurance" id="insurance">
   <div class="container">
     <div class="insurance-inner">
       <p class="section-eyebrow">Accessible care</p>
       <h2 class="section-title">We Work With Most Major Insurance Providers</h2>
-      <p class="section-subtitle">Don't let cost be the barrier that stops you from getting help. We accept most major private insurance plans, offer private pay options, and financing is available. We can verify your coverage in minutes.</p>
+      <p class="section-subtitle">Don't let cost be the barrier that stops you from getting help. We accept most major private insurance plans, offer private pay options, and financing is available.</p>
       <a href="tel:+18012597533" class="btn btn-primary mt-24">Verify Your Coverage — Call (801) 259-7533</a>
       <div class="insurance-badges">
         <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/image-3.png" alt="Joint Commission Accredited" width="140" height="100">
@@ -1947,25 +1731,21 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ===========================
-     CTA BANNER
-     =========================== -->
+<!-- CTA BANNER -->
 <section class="section-cta-banner">
   <div class="container">
     <div class="cta-banner-content">
       <h2>Are You or a Loved One Suffering from Addiction?</h2>
       <p>Start your healing journey at our luxurious facility in the Wasatch Mountains. We're here 24/7.</p>
       <div class="cta-banner-buttons">
-        <a href="#quiz" class="btn btn-green">Take Free Assessment</a>
+        <a href="#top" class="btn btn-green" onclick="event.preventDefault(); document.querySelector('.hero-quiz-card').scrollIntoView({behavior:'smooth',block:'center'});">Take Free Assessment</a>
         <a href="tel:+18012597533" class="btn btn-outline">Call (801) 259-7533</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===========================
-     FOOTER
-     =========================== -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-inner">
@@ -1999,405 +1779,438 @@ ul { list-style: none; }
   </div>
 </footer>
 
+</div><!-- /.page-content -->
+
 <!-- ===========================
-     QUIZ JAVASCRIPT
+     QUIZ ENGINE — Complete rewrite
      =========================== -->
 <script>
-(function() {
-  'use strict';
+(function(){
+'use strict';
 
-  // ============================================
-  // QUIZ CONFIGURATION — 12 Questions
-  // ============================================
-  const questions = [
-    {
-      id: 1,
-      text: "What substance are you primarily concerned about?",
-      options: [
-        { label: "Alcohol", points: 2 },
-        { label: "Opioids / Heroin", points: 2 },
-        { label: "Cocaine / Stimulants", points: 2 },
-        { label: "Benzodiazepines (Xanax, etc.)", points: 2 },
-        { label: "Marijuana", points: 2 },
-        { label: "Multiple substances", points: 2 }
-      ]
-    },
-    {
-      id: 2,
-      text: "How often are you currently using?",
-      options: [
-        { label: "Daily or multiple times per day", points: 3 },
-        { label: "Several times per week", points: 2 },
-        { label: "Weekly", points: 1 },
-        { label: "Occasionally or not currently using", points: 0 }
-      ]
-    },
-    {
-      id: 3,
-      text: "How long have you been struggling with this?",
-      options: [
-        { label: "Less than 1 year", points: 1 },
-        { label: "1-3 years", points: 2 },
-        { label: "3-5 years", points: 2 },
-        { label: "5+ years", points: 3 }
-      ]
-    },
-    {
-      id: 4,
-      text: "Are you experiencing withdrawal symptoms when you try to stop?",
-      options: [
-        { label: "Severe (shaking, sweating, anxiety, physical distress)", points: 3 },
-        { label: "Moderate (discomfort, cravings, mood changes)", points: 2 },
-        { label: "Mild (some cravings or irritability)", points: 1 },
-        { label: "None or not sure", points: 0 }
-      ]
-    },
-    {
-      id: 5,
-      text: "Do you have co-occurring mental health concerns?",
-      options: [
-        { label: "Yes, diagnosed (depression, anxiety, PTSD, bipolar, etc.)", points: 3 },
-        { label: "I think so, but not formally diagnosed", points: 2 },
-        { label: "Possibly", points: 1 },
-        { label: "No", points: 0 }
-      ]
-    },
-    {
-      id: 6,
-      text: "Have you been to treatment before?",
-      options: [
-        { label: "Yes, multiple times", points: 3 },
-        { label: "Yes, once", points: 2 },
-        { label: "No, this would be my first time", points: 1 }
-      ]
-    },
-    {
-      id: 7,
-      text: "What is your current living situation?",
-      options: [
-        { label: "Stable housing, supportive environment", points: 0 },
-        { label: "Stable housing, but triggering environment", points: 2 },
-        { label: "Unstable or unsafe housing", points: 3 }
-      ]
-    },
-    {
-      id: 8,
-      text: "How would you describe your readiness to start treatment?",
-      options: [
-        { label: "I need help immediately (within days)", points: 3 },
-        { label: "Ready to start within 1-2 weeks", points: 2 },
-        { label: "Considering options, timeline flexible (1-3 months)", points: 1 },
-        { label: "Just researching for now (3+ months)", points: 0 }
-      ]
-    },
-    {
-      id: 9,
-      text: "Do you have insurance coverage for treatment?",
-      options: [
-        { label: "Yes, private insurance", points: 0 },
-        { label: "Yes, but unsure about coverage", points: 0 },
-        { label: "No, considering private pay", points: 0 },
-        { label: "Not sure", points: 0 }
-      ]
-    },
-    {
-      id: 10,
-      text: "What type of treatment setting feels right for you?",
-      options: [
-        { label: "Residential (live at facility, 24/7 care)", points: 2 },
-        { label: "Intensive Outpatient (3 evenings/week)", points: 1 },
-        { label: "Not sure yet", points: 0 }
-      ]
-    },
-    {
-      id: 11,
-      text: "What's most important to you in a treatment center?",
-      options: [
-        { label: "Small, intimate environment (not overcrowded)", points: 1 },
-        { label: "Luxury amenities and comfort", points: 0 },
-        { label: "Evidence-based + holistic therapies", points: 1 },
-        { label: "Beautiful, peaceful setting", points: 0 },
-        { label: "Dual diagnosis care (addiction + mental health)", points: 2 }
-      ]
-    },
-    {
-      id: 12,
-      text: "What's your biggest concern about entering treatment?",
-      options: [
-        { label: "Cost / insurance coverage", points: 0 },
-        { label: "Taking time away from work or family", points: 0 },
-        { label: "Fear it won't work this time", points: 0 },
-        { label: "Worried about the environment / setting", points: 0 },
-        { label: "Privacy and confidentiality", points: 0 },
-        { label: "Not sure I'm \"bad enough\" to need it", points: 0 }
-      ]
+window.PQ = {};
+
+// =============================================
+// QUIZ STEPS (questions + info slides)
+// =============================================
+var steps = [
+  // Q1 is handled inline in the hero card — index 0 is placeholder
+  { type:'placeholder' },
+  // Q2
+  { type:'question', id:2, text:'What substance are you primarily concerned about?', options:[
+    {label:'Alcohol', pts:2}, {label:'Opioids / Heroin', pts:2}, {label:'Cocaine / Stimulants', pts:2},
+    {label:'Benzodiazepines (Xanax, etc.)', pts:2}, {label:'Marijuana', pts:2}, {label:'Multiple substances', pts:2}
+  ]},
+  // Q3
+  { type:'question', id:3, text:'How long has this been going on?', options:[
+    {label:'Less than 6 months', pts:0}, {label:'6 months \u2013 1 year', pts:1}, {label:'1\u20133 years', pts:2},
+    {label:'3\u20135 years', pts:2}, {label:'5+ years', pts:3}
+  ]},
+  // Q4
+  { type:'question', id:4, text:'How often is use happening right now?', options:[
+    {label:'Multiple times daily', pts:3}, {label:'Daily', pts:3}, {label:'Several times a week', pts:2}, {label:'Weekly or less', pts:1}
+  ]},
+  // Q5
+  { type:'question', id:5, text:'Are there withdrawal symptoms when trying to stop?', options:[
+    {label:'Severe (shaking, sweating, physical distress)', pts:3}, {label:'Moderate (cravings, mood changes)', pts:2},
+    {label:'Mild', pts:1}, {label:'None noticed yet', pts:0}
+  ]},
+  // INFO SLIDE
+  { type:'info', heading:"You\u2019re not alone.", body:"Over 21 million Americans struggle with addiction. The ones who find lasting recovery share one thing: they asked for help.", small:"Your answers remain 100% confidential" },
+  // Q7
+  { type:'question', id:7, text:'Are there co-occurring mental health concerns?', options:[
+    {label:'Yes \u2014 diagnosed (depression, anxiety, PTSD, bipolar)', pts:3}, {label:'I think so, not diagnosed', pts:2},
+    {label:'Possibly', pts:1}, {label:'No', pts:0}
+  ]},
+  // Q8
+  { type:'question', id:8, text:'Has treatment been tried before?', options:[
+    {label:'Yes, multiple times', pts:3}, {label:'Yes, once', pts:2}, {label:'No \u2014 this would be the first time', pts:1}
+  ]},
+  // Q9
+  { type:'question', id:9, text:'What matters most in a treatment center?', options:[
+    {label:'Small intimate environment', pts:1}, {label:'Evidence-based + holistic therapies', pts:1},
+    {label:'Dual diagnosis care', pts:2}, {label:'Beautiful peaceful setting', pts:0}, {label:'Luxury comfort', pts:0}
+  ]},
+  // Q10
+  { type:'question', id:10, text:'What\u2019s the current living situation?', options:[
+    {label:'Stable and supportive', pts:0}, {label:'Stable but triggering', pts:2}, {label:'Unstable or unsafe', pts:3}
+  ]},
+  // Q11
+  { type:'question', id:11, text:'How soon is the goal to start treatment?', options:[
+    {label:'As soon as possible (days)', pts:3}, {label:'Within 1\u20132 weeks', pts:2},
+    {label:'1\u20133 months', pts:1}, {label:'Just researching for now', pts:0}
+  ]},
+  // Q12
+  { type:'question', id:12, text:'Is there insurance coverage?', options:[
+    {label:'Yes, private insurance', pts:0}, {label:'Yes, unsure about coverage', pts:0},
+    {label:'No \u2014 considering private pay', pts:0}, {label:'Not sure', pts:0}
+  ]},
+  // YES STREAK (commitment slide)
+  { type:'commitment', heading:"One last thing.", body:"Recovery is possible. People with your profile who complete a full residential program have an 80%+ chance of sustained sobriety at 12 months.", question:"Are you ready to take back control of your life?", options:[
+    {label:'Yes, I\u2019m ready', pts:1}, {label:'Yes, but I\u2019m scared', pts:1}, {label:'I need more information', pts:0}
+  ]}
+];
+
+var TOTAL_DISPLAY_STEPS = steps.length - 1; // minus placeholder
+var currentStep = 0; // 0 = hero Q1 already shown
+var answers = [];
+var totalScore = 0;
+var infoAutoTimer = null;
+
+// DOM
+var modal = document.getElementById('quizModal');
+var modalCard = document.getElementById('quizModalCard');
+var qmBody = document.getElementById('qmBody');
+var qmFill = document.getElementById('qmProgressFill');
+var loadScreen = document.getElementById('loadingScreen');
+var loadBar = document.getElementById('loadingBarFill');
+var loadMsg = document.getElementById('loadingMsg');
+var resultsScreen = document.getElementById('resultsScreen');
+var resultContainer = document.getElementById('resultContainer');
+
+// =============================================
+// START QUIZ (called from hero Q1 click)
+// =============================================
+PQ.startQuiz = function(el) {
+  el.classList.add('selected');
+  var val = el.getAttribute('data-value');
+  answers.push({questionId:1, label:val, points:0});
+  // Open modal after brief delay
+  setTimeout(function(){
+    document.body.classList.add('modal-open');
+    modal.classList.add('open');
+    currentStep = 1;
+    renderStep(currentStep);
+  }, 300);
+};
+
+// =============================================
+// RENDER STEP
+// =============================================
+function renderStep(idx) {
+  var s = steps[idx];
+  var pct = Math.round((idx / TOTAL_DISPLAY_STEPS) * 100);
+  qmFill.style.width = pct + '%';
+
+  if (s.type === 'question') {
+    renderQuestion(s, idx);
+  } else if (s.type === 'info') {
+    renderInfo(s);
+  } else if (s.type === 'commitment') {
+    renderCommitment(s, idx);
+  }
+}
+
+function renderQuestion(q, idx) {
+  var stepNum = getDisplayNum(idx);
+  var html = '<div class="qm-animate-in">';
+  html += '<div class="qm-step-label">Question ' + stepNum + ' of 13</div>';
+  html += '<h3>' + q.text + '</h3>';
+  html += '<div class="qm-options">';
+  q.options.forEach(function(o, i){
+    html += '<button class="qm-option" data-idx="'+i+'" data-pts="'+o.pts+'" onclick="window.PQ.answer(this,'+idx+')">';
+    html += '<span class="radio"></span><span>'+o.label+'</span></button>';
+  });
+  html += '</div>';
+  html += '<div class="qm-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>100% confidential</div>';
+  html += '</div>';
+  qmBody.innerHTML = html;
+}
+
+function renderInfo(s) {
+  var html = '<div class="qm-animate-in qm-info-slide">';
+  html += '<h3>' + s.heading + '</h3>';
+  html += '<p>' + s.body + '</p>';
+  html += '<p class="small">' + s.small + '</p>';
+  html += '<button class="btn btn-primary" onclick="window.PQ.advanceInfo()">Continue</button>';
+  html += '</div>';
+  qmBody.innerHTML = html;
+  // Auto-advance after 2.5s
+  infoAutoTimer = setTimeout(function(){ PQ.advanceInfo(); }, 2500);
+}
+
+function renderCommitment(s, idx) {
+  var html = '<div class="qm-animate-in qm-info-slide">';
+  html += '<h3>' + s.heading + '</h3>';
+  html += '<p>' + s.body + '</p>';
+  html += '<p class="small" style="margin-bottom:24px;">' + s.question + '</p>';
+  html += '<div class="qm-options">';
+  s.options.forEach(function(o, i){
+    html += '<button class="qm-option" data-idx="'+i+'" data-pts="'+o.pts+'" onclick="window.PQ.answer(this,'+idx+')">';
+    html += '<span class="radio"></span><span>'+o.label+'</span></button>';
+  });
+  html += '</div>';
+  html += '</div>';
+  qmBody.innerHTML = html;
+}
+
+function getDisplayNum(idx) {
+  var n = 1; // Q1 already answered
+  for (var i = 1; i <= idx; i++) {
+    if (steps[i].type === 'question' || steps[i].type === 'commitment') n++;
+  }
+  return n;
+}
+
+// =============================================
+// HANDLE ANSWER
+// =============================================
+PQ.answer = function(el, stepIdx) {
+  el.classList.add('selected');
+  var pts = parseInt(el.getAttribute('data-pts'), 10);
+  var optIdx = parseInt(el.getAttribute('data-idx'), 10);
+  var s = steps[stepIdx];
+  var opts = s.options;
+
+  answers.push({
+    questionId: s.id || ('commit'),
+    label: opts[optIdx].label,
+    points: pts
+  });
+  totalScore += pts;
+
+  setTimeout(function(){
+    currentStep++;
+    if (currentStep < steps.length) {
+      renderStep(currentStep);
+    } else {
+      // Quiz complete — show loading
+      showLoading();
     }
+  }, 300);
+};
+
+PQ.advanceInfo = function() {
+  if (infoAutoTimer) { clearTimeout(infoAutoTimer); infoAutoTimer = null; }
+  currentStep++;
+  if (currentStep < steps.length) {
+    renderStep(currentStep);
+  } else {
+    showLoading();
+  }
+};
+
+// =============================================
+// LOADING SCREEN
+// =============================================
+function showLoading() {
+  modal.classList.remove('open');
+  document.body.classList.remove('modal-open');
+  loadScreen.classList.add('active');
+
+  var msgs = [
+    'Reviewing your responses...',
+    'Analysing severity indicators...',
+    'Matching to treatment programs...',
+    'Evaluating insurance options...',
+    'Preparing your personalised assessment...'
   ];
-
-  // ============================================
-  // STATE
-  // ============================================
-  let currentQuestion = 0;
-  let answers = [];
-  let totalScore = 0;
-
-  // Try to restore from localStorage
-  const saved = localStorage.getItem('pinnacle_quiz_state');
-  if (saved) {
-    try {
-      const state = JSON.parse(saved);
-      if (state.answers && state.answers.length > 0 && state.answers.length < questions.length) {
-        currentQuestion = state.answers.length;
-        answers = state.answers;
-        totalScore = state.totalScore || 0;
-      }
-    } catch(e) { /* ignore */ }
-  }
-
-  // ============================================
-  // DOM REFS
-  // ============================================
-  const quizCard = document.getElementById('quizCard');
-  const progressFill = document.getElementById('progressFill');
-  const progressLabel = document.getElementById('progressLabel');
-  const progressPercent = document.getElementById('progressPercent');
-  const resultsContainer = document.getElementById('resultsContainer');
-
-  // ============================================
-  // RENDER QUESTION
-  // ============================================
-  function renderQuestion(index) {
-    const q = questions[index];
-    const pct = Math.round((index / questions.length) * 100);
-
-    progressFill.style.width = pct + '%';
-    progressLabel.textContent = 'Question ' + (index + 1) + ' of ' + questions.length;
-    progressPercent.textContent = pct + '%';
-
-    let optionsHTML = '';
-    q.options.forEach(function(opt, i) {
-      optionsHTML += '<button class="quiz-option" data-question="' + q.id + '" data-index="' + i + '" data-points="' + opt.points + '" onclick="window._selectAnswer(this)">' +
-        '<span class="quiz-option-radio"></span>' +
-        '<span>' + opt.label + '</span>' +
-      '</button>';
-    });
-
-    const html = '<div class="quiz-question active">' +
-      '<div class="quiz-question-number">Question ' + (index + 1) + ' of ' + questions.length + '</div>' +
-      '<h3>' + q.text + '</h3>' +
-      '<div class="quiz-options">' + optionsHTML + '</div>' +
-      '<div class="quiz-confidential">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>' +
-        'Your answers are 100% confidential' +
-      '</div>' +
-    '</div>';
-
-    quizCard.innerHTML = html;
-  }
-
-  // ============================================
-  // HANDLE ANSWER
-  // ============================================
-  window._selectAnswer = function(el) {
-    // Visual feedback
-    el.classList.add('selected');
-    
-    const points = parseInt(el.dataset.points, 10);
-    const qIndex = currentQuestion;
-    const optIndex = parseInt(el.dataset.index, 10);
-
-    // Record answer
-    answers.push({
-      questionId: questions[qIndex].id,
-      optionIndex: optIndex,
-      label: questions[qIndex].options[optIndex].label,
-      points: points
-    });
-    totalScore += points;
-
-    // Save to localStorage
-    localStorage.setItem('pinnacle_quiz_state', JSON.stringify({
-      answers: answers,
-      totalScore: totalScore
-    }));
-
-    // Auto-advance after 300ms
-    setTimeout(function() {
-      currentQuestion++;
-      if (currentQuestion < questions.length) {
-        renderQuestion(currentQuestion);
-      } else {
-        showResults();
-      }
-    }, 300);
-  };
-
-  // ============================================
-  // SHOW RESULTS
-  // ============================================
-  function showResults() {
-    // Complete progress bar
-    progressFill.style.width = '100%';
-    progressLabel.textContent = 'Assessment Complete';
-    progressPercent.textContent = '100%';
-
-    // Hide quiz card, show results
-    quizCard.style.display = 'none';
-    resultsContainer.style.display = 'block';
-
-    // Determine tier
-    let tier;
-    if (totalScore >= 16) {
-      tier = 'hot';
-    } else if (totalScore >= 9) {
-      tier = 'warm';
-    } else {
-      tier = 'cold';
+  var msgIdx = 0;
+  var progress = 0;
+  var msgInterval = setInterval(function(){
+    msgIdx++;
+    if (msgIdx < msgs.length) {
+      loadMsg.style.opacity = '0';
+      setTimeout(function(){
+        loadMsg.textContent = msgs[msgIdx];
+        loadMsg.style.opacity = '1';
+      }, 200);
     }
+  }, 1200);
 
-    // Personalize results with quiz data
-    const substance = answers[0] ? answers[0].label : 'substance use';
-    const withdrawal = answers[3] ? answers[3].label : '';
-    const dualDiagnosis = answers[4] ? (answers[4].optionIndex <= 1) : false;
-    const previousTreatment = answers[5] ? (answers[5].optionIndex <= 1) : false;
-    const insurance = answers[8] ? answers[8].label : '';
+  var barInterval = setInterval(function(){
+    progress += 2;
+    if (progress > 100) progress = 100;
+    loadBar.style.width = progress + '%';
+  }, 120);
 
-    if (tier === 'hot') {
-      let summary = 'Based on your answers, you\'re dealing with ' + substance.toLowerCase() + ' addiction';
-      if (withdrawal && answers[3].optionIndex <= 1) {
-        summary += ' with ' + withdrawal.toLowerCase().split('(')[0].trim() + ' withdrawal symptoms';
-      }
-      if (dualDiagnosis) {
-        summary += '. Combined with mental health concerns, this requires comprehensive, immediate care in a safe environment.';
-      } else {
-        summary += '. This requires professional medical support in a safe, structured environment.';
-      }
-      document.getElementById('hotSummary').textContent = summary;
-      document.getElementById('resultHot').classList.add('active');
-    }
-    else if (tier === 'warm') {
-      let summary = 'You\'re ready to make a change, and that takes courage. ';
-      if (previousTreatment) {
-        summary += 'We understand you\'ve tried treatment before — our approach is different: intimate setting, personalized care, evidence-based + holistic blend. ';
-      }
-      if (dualDiagnosis) {
-        summary += 'Our dual diagnosis program treats both addiction and co-occurring mental health — because you can\'t separate them. ';
-      }
-      summary += 'You\'re in the right place.';
-      document.getElementById('warmSummary').textContent = summary;
+  setTimeout(function(){
+    clearInterval(msgInterval);
+    clearInterval(barInterval);
+    loadBar.style.width = '100%';
+    setTimeout(function(){
+      loadScreen.classList.remove('active');
+      showResults();
+    }, 400);
+  }, 6000);
+}
 
-      // Add personalized section
-      let personalizedHTML = '';
-      if (insurance.toLowerCase().includes('unsure') || insurance.toLowerCase().includes('not sure')) {
-        personalizedHTML += '<p style="margin-bottom:12px;">We work with most major insurance providers and can verify your coverage quickly — just call or fill out the form above.</p>';
-      }
-      document.getElementById('warmPersonalized').innerHTML = personalizedHTML;
-      document.getElementById('resultWarm').classList.add('active');
-    }
-    else {
-      document.getElementById('resultCold').classList.add('active');
-    }
+// =============================================
+// RESULTS
+// =============================================
+function showResults() {
+  var tier;
+  if (totalScore >= 18) tier = 'hot';
+  else if (totalScore >= 10) tier = 'warm';
+  else tier = 'cold';
 
-    // Smooth scroll to results
-    resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Hide page content, show results fullscreen
+  document.body.classList.add('results-active');
+  resultsScreen.classList.add('active');
+  document.getElementById('navbar').style.display = 'none';
 
-    // Clear saved state since quiz is complete
-    localStorage.removeItem('pinnacle_quiz_state');
-  }
-
-  // ============================================
-  // FORM SUBMISSION HANDLER
-  // ============================================
-  window.submitForm = function(type) {
-    let name, email, phone, insurance;
-    
-    if (type === 'hot') {
-      name = document.getElementById('hotName').value;
-      phone = document.getElementById('hotPhone').value;
-      insurance = document.getElementById('hotInsurance').value;
-      if (!name || !phone) {
-        alert('Please enter your name and phone number.');
-        return;
-      }
-    } else if (type === 'warm') {
-      name = document.getElementById('warmName').value;
-      email = document.getElementById('warmEmail').value;
-      if (!name || !email) {
-        alert('Please enter your name and email address.');
-        return;
-      }
-    } else {
-      name = document.getElementById('coldName').value;
-      email = document.getElementById('coldEmail').value;
-      if (!name || !email) {
-        alert('Please enter your name and email address.');
-        return;
-      }
-    }
-
-    // Collect all quiz answers for the lead record
-    const leadData = {
-      type: type,
-      score: totalScore,
-      name: name,
-      email: email || '',
-      phone: phone || '',
-      insurance: insurance || '',
-      answers: answers,
-      timestamp: new Date().toISOString(),
-      source: 'quiz_landing_page'
-    };
-
-    // Log lead data (in production, send to CRM/webhook)
-    console.log('LEAD CAPTURED:', JSON.stringify(leadData, null, 2));
-
-    // Show success state
-    let btn;
-    if (type === 'hot') btn = document.querySelector('#resultHot .result-form .btn');
-    else if (type === 'warm') btn = document.querySelector('#resultWarm .result-form .btn');
-    else btn = document.querySelector('#resultCold .result-form .btn');
-
-    if (btn) {
-      btn.textContent = 'Submitted Successfully!';
-      btn.style.background = '#61CE70';
-      btn.disabled = true;
-      btn.style.cursor = 'default';
-    }
-
-    // Show thank you message
-    let form;
-    if (type === 'hot') form = document.querySelector('#resultHot .result-form');
-    else if (type === 'warm') form = document.querySelector('#resultWarm .result-form');
-    else form = document.querySelector('#resultCold .result-form');
-
-    if (form) {
-      const thankYou = document.createElement('div');
-      thankYou.style.cssText = 'text-align:center; padding:16px 0 0; color:#003E6B; font-weight:500;';
-      if (type === 'hot') {
-        thankYou.textContent = 'Thank you! Our admissions team will contact you shortly. For immediate help, call (801) 259-7533.';
-      } else {
-        thankYou.textContent = 'Thank you! Check your email for your free guide. We\'re here whenever you\'re ready to talk.';
-      }
-      form.appendChild(thankYou);
-    }
-  };
-
-  // ============================================
-  // NAVBAR SCROLL BEHAVIOR
-  // ============================================
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', function() {
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
+  // Build personalized summary
+  var substance = (answers[1] && answers[1].label) || 'substance use';
+  var dualDiag = false;
+  var prevTreat = false;
+  answers.forEach(function(a){
+    if (a.questionId === 7 && (a.label.indexOf('Yes') === 0 || a.label.indexOf('I think') === 0)) dualDiag = true;
+    if (a.questionId === 8 && a.label.indexOf('Yes') === 0) prevTreat = true;
   });
 
-  // ============================================
-  // INITIALIZE
-  // ============================================
-  renderQuestion(currentQuestion);
+  var html = '';
+
+  if (tier === 'hot') {
+    html = buildHotResult(substance, dualDiag);
+  } else if (tier === 'warm') {
+    html = buildWarmResult(substance, dualDiag, prevTreat);
+  } else {
+    html = buildColdResult();
+  }
+
+  resultContainer.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+
+function buildHotResult(substance, dual) {
+  var sum = 'Based on your answers, you\'re dealing with '+substance.toLowerCase()+' concerns';
+  if (dual) sum += ' combined with mental health factors';
+  sum += '. This requires comprehensive, immediate care in a safe environment.';
+
+  return '<div class="result-card"><div class="result-header">'
+    +'<div class="result-icon-circle hot"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#cf2e2e" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>'
+    +'<h2>You Need Support Right Now</h2><p>'+sum+'</p></div>'
+    +'<div class="result-content">'
+    +'<div class="result-section"><p>Our 24/7 medically-supervised detox and residential program provides the safety you need to begin healing \u2014 in an intimate setting where you\u2019ll never feel like a number.</p></div>'
+    +'<div class="result-section"><h4>What You\u2019ll Receive at Pinnacle</h4><ul>'
+    +'<li>One of maximum 16 clients \u2014 our staff knows your name, your story, your goals</li>'
+    +'<li>2 hours of individual therapy + 30 hours of group therapy weekly</li>'
+    +'<li>Full psychiatric and medical evaluation within 24 hours</li>'
+    +'<li>Personalized treatment plan designed specifically for you</li>'
+    +'<li>Beautiful mountain setting that aids in healing \u2014 not institutional</li></ul></div>'
+    +'<div class="result-cta-box"><h3>Speak With Admissions Now</h3>'
+    +'<a href="tel:+18012597533" class="result-phone-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>(801) 259-7533</a>'
+    +'<p class="avail">Available 24/7 \u2014 Confidential, No Obligation</p></div>'
+    +'<div class="result-form"><h4>Verify My Insurance Coverage</h4><p class="form-sub">Get results in minutes. No obligation.</p>'
+    +'<div class="form-row"><input type="text" class="form-input" placeholder="First Name" id="hotName"><input type="tel" class="form-input" placeholder="Phone Number" id="hotPhone"></div>'
+    +'<div class="form-row full"><input type="text" class="form-input" placeholder="Insurance Provider" id="hotIns"></div>'
+    +'<button class="btn btn-primary mt-12" style="width:100%" onclick="window.PQ.submitForm(\'hot\')">Verify My Coverage</button></div>'
+    +'<div class="result-section"><h4>What Happens Next</h4><div class="result-steps">'
+    +'<div class="result-step"><div class="result-step-num">1</div><p>Call now or submit info above</p></div>'
+    +'<div class="result-step"><div class="result-step-num">2</div><p>Brief 10-15 min confidential assessment</p></div>'
+    +'<div class="result-step"><div class="result-step-num">3</div><p>We explain your options and answer all questions</p></div>'
+    +'<div class="result-step"><div class="result-step-num">4</div><p>Admission within 24-48 hours</p></div></div></div>'
+    +'<div class="result-testimonial"><blockquote>\u201cPinnacle Recovery in Utah was more than words or stars can ever describe. The staff is very accommodating and passionate about the work they do. I learned to change my behaviors and thinking through spirituality, meditation, therapy, and group sessions. Pinnacle has saved my life.\u201d</blockquote><cite>\u2014 Scott, Pinnacle Alumni</cite></div>'
+    +'</div></div>';
+}
+
+function buildWarmResult(substance, dual, prev) {
+  var sum = 'You\u2019re ready to make a change, and that takes courage. ';
+  if (prev) sum += 'We understand you\u2019ve tried treatment before \u2014 our approach is different: intimate setting, personalized care, evidence-based + holistic blend. ';
+  if (dual) sum += 'Our dual diagnosis program treats both addiction and co-occurring mental health \u2014 because you can\u2019t separate them. ';
+  sum += 'You\u2019re in the right place.';
+
+  return '<div class="result-card"><div class="result-header">'
+    +'<div class="result-icon-circle warm"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#e6960a" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>'
+    +'<h2>You\u2019re Ready \u2014 Let\u2019s Find Your Path</h2><p>'+sum+'</p></div>'
+    +'<div class="result-content">'
+    +'<div class="result-section"><h4>Why Pinnacle Is Different</h4><p>Unlike large facilities where you\u2019re one of 50+ clients, at Pinnacle you\u2019re one of 16 maximum. This intimate environment allows us to customize every aspect of your treatment, build real relationships, and create a family-like support system in Utah\u2019s mountain setting.</p></div>'
+    +'<div class="result-cta-box"><h3>Schedule Your Free Clinical Assessment</h3><p>30-minute confidential call. No pressure \u2014 just clarity.</p>'
+    +'<a href="tel:+18012597533" class="result-phone-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>(801) 259-7533</a>'
+    +'<p class="avail">No obligation \u2014 we\u2019ll answer all your questions</p></div>'
+    +'<div class="result-form"><h4>Download Our Complete Treatment Guide</h4><p class="form-sub">Learn what to expect, see facility photos, understand your options.</p>'
+    +'<div class="form-row"><input type="text" class="form-input" placeholder="First Name" id="warmName"><input type="email" class="form-input" placeholder="Email Address" id="warmEmail"></div>'
+    +'<button class="btn btn-primary mt-12" style="width:100%" onclick="window.PQ.submitForm(\'warm\')">Send Me the Free Guide</button></div>'
+    +'<div class="result-section"><h4>What\u2019s Inside the Guide</h4><ul>'
+    +'<li>Residential vs IOP programs explained in plain language</li>'
+    +'<li>What a typical day at Pinnacle looks like</li>'
+    +'<li>Insurance and payment options breakdown</li>'
+    +'<li>Full facility tour photos</li>'
+    +'<li>Real stories from our alumni</li></ul></div>'
+    +'<div class="result-section"><h4>What Happens on the Assessment Call</h4><div class="result-steps">'
+    +'<div class="result-step"><div class="result-step-num">1</div><p>We learn about your situation</p></div>'
+    +'<div class="result-step"><div class="result-step-num">2</div><p>Explain which program fits best</p></div>'
+    +'<div class="result-step"><div class="result-step-num">3</div><p>Answer questions about insurance and cost</p></div>'
+    +'<div class="result-step"><div class="result-step-num">4</div><p>If ready, begin the admission process</p></div></div></div>'
+    +'<div class="result-testimonial"><blockquote>\u201cMy wife found Pinnacle on Google reviews and I took a leap of faith. The staff is very accommodating and personable. The house is like a family and everyone that works here is very passionate about the work they do.\u201d</blockquote><cite>\u2014 Scott, Pinnacle Alumni</cite></div>'
+    +'</div></div>';
+}
+
+function buildColdResult() {
+  return '<div class="result-card"><div class="result-header">'
+    +'<div class="result-icon-circle cold"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#6EC1E4" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>'
+    +'<h2>Start With Information</h2><p>You\u2019re taking an important first step by researching treatment options. Recovery starts with information, and we\u2019re here to help.</p></div>'
+    +'<div class="result-content">'
+    +'<div class="result-section"><h4>Treatment Options at Pinnacle</h4><ul>'
+    +'<li><strong>Residential Treatment</strong> (30-90 days) \u2014 Live at our facility with 24/7 care</li>'
+    +'<li><strong>Intensive Outpatient</strong> (3 evenings/week) \u2014 Continue daily life with structured support</li>'
+    +'<li><strong>Medically-Supervised Detox</strong> \u2014 Safe withdrawal management under 24/7 supervision</li>'
+    +'<li><strong>Dual Diagnosis Care</strong> \u2014 Treat addiction and mental health together</li>'
+    +'<li><strong>Aftercare &amp; Alumni Support</strong> \u2014 Recovery doesn\u2019t end at discharge</li></ul></div>'
+    +'<div class="result-section"><h4>What Makes Treatment Successful</h4><ul>'
+    +'<li>Evidence-based therapies (CBT, EMDR, trauma-informed care)</li>'
+    +'<li>Holistic healing (yoga, meditation, nature therapy)</li>'
+    +'<li>Personalized treatment plans \u2014 not cookie-cutter approaches</li>'
+    +'<li>Small client-to-staff ratios for individual attention</li>'
+    +'<li>Aftercare support \u2014 recovery is a lifelong journey</li></ul></div>'
+    +'<div class="result-form"><h4>Download Free Recovery Guide</h4><p class="form-sub">A comprehensive guide to understanding addiction treatment options in Utah.</p>'
+    +'<div class="form-row"><input type="text" class="form-input" placeholder="First Name" id="coldName"><input type="email" class="form-input" placeholder="Email Address" id="coldEmail"></div>'
+    +'<button class="btn btn-primary mt-12" style="width:100%" onclick="window.PQ.submitForm(\'cold\')">Download Free Guide</button></div>'
+    +'<div class="result-section" style="text-align:center;margin-top:24px;"><p style="margin-bottom:12px;">SAMHSA National Helpline: <a href="tel:18006624357" style="color:var(--color-navy);font-weight:600;">1-800-662-4357</a><br><span style="font-size:12px;color:var(--color-steel);">Free, confidential, 24/7 support</span></p>'
+    +'<a href="https://pinnaclerecoveryut.com/programs/" class="btn btn-outline-dark" target="_blank">Browse Our Programs</a></div>'
+    +'<div style="text-align:center;margin-top:20px;padding:24px;background:var(--color-light-bg);border-radius:12px;"><p style="font-size:14px;color:var(--color-dark);">When you\u2019re ready to talk, call us at <a href="tel:+18012597533" style="color:var(--color-navy);font-weight:600;">(801) 259-7533</a>.<br><strong>We\u2019ll meet you where you are.</strong></p></div>'
+    +'</div></div>';
+}
+
+// =============================================
+// FORM SUBMISSION
+// =============================================
+PQ.submitForm = function(type) {
+  var name, email, phone, ins;
+  if (type === 'hot') {
+    name = document.getElementById('hotName').value;
+    phone = document.getElementById('hotPhone').value;
+    ins = document.getElementById('hotIns').value;
+    if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+  } else if (type === 'warm') {
+    name = document.getElementById('warmName').value;
+    email = document.getElementById('warmEmail').value;
+    if (!name || !email) { alert('Please enter your name and email.'); return; }
+  } else {
+    name = document.getElementById('coldName').value;
+    email = document.getElementById('coldEmail').value;
+    if (!name || !email) { alert('Please enter your name and email.'); return; }
+  }
+
+  var leadData = { type:type, score:totalScore, name:name, email:email||'', phone:phone||'', insurance:ins||'', answers:answers, timestamp:new Date().toISOString(), source:'quiz_v2' };
+  console.log('LEAD CAPTURED:', JSON.stringify(leadData, null, 2));
+
+  // Find the button and form within the result container
+  var btns = resultContainer.querySelectorAll('.result-form .btn');
+  btns.forEach(function(b){
+    b.textContent = 'Submitted Successfully!';
+    b.style.background = '#61CE70';
+    b.disabled = true;
+    b.style.cursor = 'default';
+  });
+
+  var forms = resultContainer.querySelectorAll('.result-form');
+  forms.forEach(function(f){
+    var ty = document.createElement('div');
+    ty.style.cssText = 'text-align:center;padding:14px 0 0;color:#1B3A5C;font-weight:500;font-size:14px;';
+    ty.textContent = type === 'hot' ? 'Thank you! Our admissions team will contact you shortly. For immediate help, call (801) 259-7533.' : 'Thank you! Check your email for your free guide.';
+    f.appendChild(ty);
+  });
+};
+
+// =============================================
+// NAVBAR SCROLL
+// =============================================
+var nb = document.getElementById('navbar');
+window.addEventListener('scroll', function(){
+  if (window.scrollY > 50) nb.classList.add('scrolled');
+  else nb.classList.remove('scrolled');
+});
 
 })();
 </script>

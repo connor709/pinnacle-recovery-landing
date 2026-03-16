@@ -621,7 +621,10 @@ ul { list-style: none; }
 }
 
 .loading-logo img {
-  height: 60px;
+  max-width: 160px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   filter: brightness(0) invert(1);
 }
 
@@ -910,6 +913,398 @@ ul { list-style: none; }
   .result-phone-big { font-size: 22px; }
   .result-cta-box { padding: 24px 20px; }
   .result-form { padding: 20px; }
+}
+
+/* ============================================
+   RESULTS v2 — Full-page takeover
+   ============================================ */
+
+.results-fullscreen .r-header {
+  background: var(--color-navy-deep);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.results-fullscreen .r-header img { height: 36px; filter: brightness(0) invert(1); }
+.results-fullscreen .r-header a { color: #fff; font-weight: 500; font-size: 14px; }
+
+.r-hero {
+  background: linear-gradient(135deg, var(--color-navy-deep) 0%, var(--color-navy) 100%);
+  padding: 52px 24px 48px;
+  color: #fff;
+  text-align: center;
+}
+
+.r-hero.cold-hero {
+  background: linear-gradient(135deg, #2c4a66 0%, #3d6280 100%);
+}
+
+.r-hero h1 {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.25;
+  max-width: 720px;
+  margin: 0 auto 14px;
+}
+
+.r-hero .r-hero-sub {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.82);
+  max-width: 640px;
+  margin: 0 auto 20px;
+}
+
+.r-hero .r-urgency {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(207,46,46,0.2);
+  border: 1px solid rgba(207,46,46,0.4);
+  border-radius: var(--pill);
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff8a8a;
+}
+
+/* Profile + Form two-col */
+.r-two-col {
+  max-width: 900px;
+  margin: -36px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.r-profile-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+}
+
+.r-profile-card h4 {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-dark);
+  margin-bottom: 18px;
+}
+
+.r-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  font-size: 14px;
+}
+
+.r-profile-row:last-child { border-bottom: none; }
+
+.r-profile-row .r-label {
+  color: var(--color-steel);
+  min-width: 110px;
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.r-profile-row .r-value {
+  color: var(--color-dark);
+  font-weight: 500;
+}
+
+.r-profile-row svg { width: 18px; height: 18px; flex-shrink: 0; stroke: var(--color-navy); }
+
+.r-form-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+}
+
+.r-form-card h4 {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.r-form-card .r-form-sub {
+  font-size: 13px;
+  color: var(--color-gray-text);
+  margin-bottom: 18px;
+}
+
+.r-form-card .form-input {
+  margin-bottom: 10px;
+}
+
+.r-form-card .r-avail {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-green);
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* Why Pinnacle section in results */
+.r-why-section {
+  background: var(--color-light-bg);
+  padding: 56px 24px;
+}
+
+.r-why-section h3 {
+  text-align: center;
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 36px;
+  color: var(--color-dark);
+}
+
+.r-why-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.r-why-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.r-why-card-img {
+  height: 160px;
+  background: var(--color-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.r-why-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.r-why-card-body {
+  padding: 20px 16px;
+}
+
+.r-why-card-body h4 {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-dark);
+  margin-bottom: 6px;
+}
+
+.r-why-card-body p {
+  font-size: 13px;
+  color: var(--color-gray-text);
+  line-height: 1.6;
+}
+
+/* Comparison table (warm) */
+.r-compare {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.r-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.r-compare-table th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 16px;
+  color: var(--color-white);
+  background: var(--color-navy);
+}
+
+.r-compare-table th:first-child { border-radius: 10px 0 0 0; }
+.r-compare-table th:last-child { border-radius: 0 10px 0 0; }
+
+.r-compare-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  color: var(--color-dark);
+}
+
+.r-compare-table td:first-child { color: var(--color-gray-text); }
+.r-compare-table td:last-child { font-weight: 500; color: var(--color-navy); }
+
+.r-compare-img {
+  border-radius: 14px;
+  overflow: hidden;
+  max-height: 320px;
+}
+
+.r-compare-img img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Steps section in results */
+.r-steps-section {
+  background: #fff;
+  padding: 52px 24px;
+  text-align: center;
+}
+
+.r-steps-section h3 {
+  font-weight: 600;
+  font-size: 22px;
+  margin-bottom: 32px;
+  color: var(--color-dark);
+}
+
+.r-steps-row {
+  max-width: 800px;
+  margin: 0 auto 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.r-step-item { text-align: center; }
+
+.r-step-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0 auto 10px;
+}
+
+.r-step-item p { font-size: 13px; color: var(--color-gray-text); line-height: 1.45; }
+
+/* Testimonial banner in results */
+.r-testimonial-banner {
+  background: var(--color-navy);
+  padding: 48px 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.r-testimonial-banner blockquote {
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  max-width: 680px;
+  margin: 0 auto 16px;
+}
+
+.r-testimonial-banner cite {
+  font-style: normal;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-pale-blue);
+}
+
+/* Education cards (cold) */
+.r-edu-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.r-edu-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px 22px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.r-edu-card h4 {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+}
+
+.r-edu-card p {
+  font-size: 13px;
+  color: var(--color-gray-text);
+  line-height: 1.6;
+}
+
+/* SAMHSA block */
+.r-samhsa {
+  text-align: center;
+  padding: 36px 24px;
+  background: var(--color-light-bg);
+}
+
+.r-samhsa p { font-size: 14px; color: var(--color-dark); margin-bottom: 8px; }
+.r-samhsa a { color: var(--color-navy); font-weight: 700; font-size: 22px; }
+.r-samhsa .small { font-size: 12px; color: var(--color-steel); }
+
+/* Results footer */
+.r-footer {
+  background: var(--color-dark);
+  padding: 24px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+}
+
+.r-footer a { color: var(--color-pale-blue); }
+
+/* Form inside r-section */
+.r-form-section {
+  background: #fff;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.r-form-inline {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--color-light-bg);
+  border-radius: 16px;
+  padding: 28px 24px;
+}
+
+.r-form-inline h4 { font-weight: 600; font-size: 17px; margin-bottom: 4px; color: var(--color-dark); }
+.r-form-inline .form-sub { font-size: 13px; color: var(--color-gray-text); margin-bottom: 16px; }
+
+@media (max-width: 768px) {
+  .r-two-col { grid-template-columns: 1fr; margin-top: -20px; }
+  .r-why-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .r-compare { grid-template-columns: 1fr; }
+  .r-compare-img { display: none; }
+  .r-steps-row { grid-template-columns: 1fr 1fr; }
+  .r-edu-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .r-hero h1 { font-size: 24px; }
 }
 
 /* ============================================
@@ -1427,6 +1822,11 @@ ul { list-style: none; }
     <div class="hero-left">
       <h1>Find Your Path to Lasting Recovery in Utah's Mountain Sanctuary</h1>
       <p class="hero-sub">Intimate setting. Maximum 16 clients. Evidence-based care blended with holistic healing at the base of the Wasatch Mountains.</p>
+      <div class="hero-cta-bubble" style="background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);border-radius:16px;padding:16px 20px;max-width:480px;margin-bottom:24px;">
+        <div style="font-size:11px;font-weight:600;color:#61CE70;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">&check; FREE &middot; CONFIDENTIAL &middot; 2 MINUTES</div>
+        <p style="color:#fff;font-weight:500;font-size:15px;line-height:1.55;margin-bottom:6px;">Take the assessment to discover your personalised path to safe, lasting recovery — and find out if Pinnacle is the right fit for you.</p>
+        <p style="color:rgba(255,255,255,0.6);font-size:12px;">Over 500 people have used this assessment to find their treatment path</p>
+      </div>
       <div class="hero-badges">
         <div class="hero-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -1494,7 +1894,7 @@ ul { list-style: none; }
      =========================== -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-logo">
-    <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/logo.png" alt="Pinnacle Recovery" width="204" height="180">
+    <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/logo.png" alt="Pinnacle Recovery">
   </div>
   <div class="loading-bar-wrap">
     <div class="loading-bar"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
@@ -1506,11 +1906,7 @@ ul { list-style: none; }
      RESULTS (full-screen takeover)
      =========================== -->
 <div class="results-fullscreen" id="resultsScreen">
-  <div class="results-navbar">
-    <a href="https://pinnaclerecoveryut.com/"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/logo.png" alt="Pinnacle Recovery" height="40"></a>
-    <a href="tel:+18012597533">(801) 259-7533</a>
-  </div>
-  <div class="result-container" id="resultContainer">
+  <div id="resultContainer">
     <!-- Rendered dynamically by JS -->
   </div>
 </div>
@@ -1576,32 +1972,32 @@ ul { list-style: none; }
       <p class="section-subtitle">Our custom-built 10,000 sq ft facility at the base of the Wasatch Mountains was designed for one purpose: your recovery.</p>
     </div>
     <div class="facility-grid">
-      <div class="facility-item large">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-7-min.jpg" alt="Pinnacle Recovery exterior with mountain views" loading="lazy">
+      <div class="facility-item large" data-label="Mountain Views &amp; Landscaped Grounds">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-7-min.jpg" alt="Mountain Views and Landscaped Grounds" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='15px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='20px';">
         <div class="caption">Mountain Views &amp; Landscaped Grounds</div>
       </div>
-      <div class="facility-item">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-1-min-1.jpg" alt="Private room with ensuite bathroom" loading="lazy">
+      <div class="facility-item" data-label="Private Rooms">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-1-min-1.jpg" alt="Private room with ensuite bathroom" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='14px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='16px';">
         <div class="caption">Private Rooms</div>
       </div>
-      <div class="facility-item">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-2-min-1.jpg" alt="Common living area" loading="lazy">
+      <div class="facility-item" data-label="Common Areas">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-2-min-1.jpg" alt="Common living area" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='14px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='16px';">
         <div class="caption">Common Areas</div>
       </div>
-      <div class="facility-item">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-3-min-1.jpg" alt="Dining area with chef-prepared meals" loading="lazy">
+      <div class="facility-item" data-label="Five-Star Dining">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-11-min.jpg" alt="Five-star chef-prepared dining" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='14px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='16px';">
         <div class="caption">Five-Star Dining</div>
       </div>
-      <div class="facility-item">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-5-min-1.jpg" alt="Outdoor patio and recreation area" loading="lazy">
+      <div class="facility-item" data-label="Outdoor Patio">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-5-min-1.jpg" alt="Outdoor patio and recreation" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='14px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='16px';">
         <div class="caption">Outdoor Patio</div>
       </div>
-      <div class="facility-item">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-6-min.jpg" alt="Therapy and group session spaces" loading="lazy">
+      <div class="facility-item" data-label="Group Therapy Spaces">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-6-min.jpg" alt="Group therapy session spaces" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='14px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='16px';">
         <div class="caption">Group Therapy Spaces</div>
       </div>
-      <div class="facility-item">
-        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-4-min-1.jpg" alt="Walking trails at Wasatch Mountains" loading="lazy">
+      <div class="facility-item" data-label="Walking Trails">
+        <img src="https://pinnaclerecoveryut.com/wp-content/uploads/2023/03/Mask-group-min.jpg" alt="Outdoor experiential therapy and trails" loading="lazy" onerror="this.style.display='none';this.parentNode.style.background='#1B3A5C';this.parentNode.style.display='flex';this.parentNode.style.alignItems='center';this.parentNode.style.justifyContent='center';this.parentNode.style.color='#fff';this.parentNode.style.fontSize='14px';this.parentNode.style.fontWeight='500';this.parentNode.style.textAlign='center';this.parentNode.style.padding='16px';">
         <div class="caption">Walking Trails</div>
       </div>
     </div>
@@ -2036,130 +2432,162 @@ function showLoading() {
 }
 
 // =============================================
-// RESULTS
+// RESULTS v2 — Full-page takeover
 // =============================================
+function getAnswerByQid(qid) {
+  for (var i = 0; i < answers.length; i++) { if (answers[i].questionId === qid) return answers[i].label; }
+  return '';
+}
+
+function buildProfileCard(substance, duration, frequency, withdrawal, mentalHealth, prevTreat) {
+  var svgCheck = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+  return '<div class="r-profile-card"><h4>Your Severity Profile</h4>'
+    +'<div class="r-profile-row">'+svgCheck+'<span class="r-label">Substance</span><span class="r-value">'+substance+'</span></div>'
+    +'<div class="r-profile-row">'+svgCheck+'<span class="r-label">Duration</span><span class="r-value">'+duration+'</span></div>'
+    +'<div class="r-profile-row">'+svgCheck+'<span class="r-label">Frequency</span><span class="r-value">'+frequency+'</span></div>'
+    +'<div class="r-profile-row">'+svgCheck+'<span class="r-label">Withdrawal</span><span class="r-value">'+withdrawal+'</span></div>'
+    +'<div class="r-profile-row">'+svgCheck+'<span class="r-label">Mental Health</span><span class="r-value">'+mentalHealth+'</span></div>'
+    +'<div class="r-profile-row">'+svgCheck+'<span class="r-label">Prior Treatment</span><span class="r-value">'+prevTreat+'</span></div>'
+    +'</div>';
+}
+
+var rHeader = '<div class="r-header"><a href="https://pinnaclerecoveryut.com/"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/04/logo.png" alt="Pinnacle Recovery"></a><a href="tel:+18012597533">(801) 259-7533</a></div>';
+var rFooter = '<div class="r-footer">This assessment is for informational purposes only and does not constitute medical advice. If you are experiencing a medical emergency, call 911. SAMHSA: 1-800-662-4357. All assessments are confidential and HIPAA compliant. <a href="https://pinnaclerecoveryut.com/privacy-policy/" target="_blank">Privacy Policy</a></div>';
+var phoneSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>';
+var imgErr = ' onerror="this.style.display=\'none\';this.parentNode.style.background=\'#1B3A5C\';this.parentNode.innerHTML+=\'<svg width=40 height=40 viewBox=\\\'0 0 24 24\\\' fill=\\\'none\\\' stroke=\\\'white\\\' stroke-width=\\\'1.5\\\'><path d=\\\'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\\\'/></svg>\';"';
+
 function showResults() {
   var tier;
   if (totalScore >= 18) tier = 'hot';
   else if (totalScore >= 10) tier = 'warm';
   else tier = 'cold';
 
-  // Hide page content, show results fullscreen
   document.body.classList.add('results-active');
   resultsScreen.classList.add('active');
   document.getElementById('navbar').style.display = 'none';
 
-  // Build personalized summary
-  var substance = (answers[1] && answers[1].label) || 'substance use';
-  var dualDiag = false;
-  var prevTreat = false;
-  answers.forEach(function(a){
-    if (a.questionId === 7 && (a.label.indexOf('Yes') === 0 || a.label.indexOf('I think') === 0)) dualDiag = true;
-    if (a.questionId === 8 && a.label.indexOf('Yes') === 0) prevTreat = true;
-  });
+  var substance = getAnswerByQid(2) || 'Substance use';
+  var duration = getAnswerByQid(3) || 'Not specified';
+  var frequency = getAnswerByQid(4) || 'Not specified';
+  var withdrawal = getAnswerByQid(5) || 'Not specified';
+  var mentalHealth = getAnswerByQid(7) || 'Not specified';
+  var prevTreatLabel = getAnswerByQid(8) || 'Not specified';
+  var readiness = getAnswerByQid(11) || '';
+  var dualDiag = mentalHealth.indexOf('Yes') === 0 || mentalHealth.indexOf('I think') === 0;
+  var prevTreat = prevTreatLabel.indexOf('Yes') === 0;
+  var profile = buildProfileCard(substance, duration, frequency, withdrawal, mentalHealth, prevTreatLabel);
 
   var html = '';
-
-  if (tier === 'hot') {
-    html = buildHotResult(substance, dualDiag);
-  } else if (tier === 'warm') {
-    html = buildWarmResult(substance, dualDiag, prevTreat);
-  } else {
-    html = buildColdResult();
-  }
+  if (tier === 'hot') html = buildHotResult(substance, duration, withdrawal, dualDiag, profile);
+  else if (tier === 'warm') html = buildWarmResult(substance, dualDiag, prevTreat, readiness, profile);
+  else html = buildColdResult(profile);
 
   resultContainer.innerHTML = html;
   window.scrollTo(0, 0);
+
+  // Attach image error handlers after render
+  resultContainer.querySelectorAll('img[data-fallback]').forEach(function(img){
+    img.onerror = function(){
+      this.style.display = 'none';
+      this.parentNode.style.background = '#1B3A5C';
+      this.parentNode.style.display = 'flex';
+      this.parentNode.style.alignItems = 'center';
+      this.parentNode.style.justifyContent = 'center';
+      var sv = document.createElementNS('http://www.w3.org/2000/svg','svg');
+      sv.setAttribute('width','40'); sv.setAttribute('height','40'); sv.setAttribute('viewBox','0 0 24 24');
+      sv.setAttribute('fill','none'); sv.setAttribute('stroke','rgba(255,255,255,0.5)'); sv.setAttribute('stroke-width','1.5');
+      sv.innerHTML = '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>';
+      this.parentNode.appendChild(sv);
+    };
+  });
 }
 
-function buildHotResult(substance, dual) {
-  var sum = 'Based on your answers, you\'re dealing with '+substance.toLowerCase()+' concerns';
-  if (dual) sum += ' combined with mental health factors';
-  sum += '. This requires comprehensive, immediate care in a safe environment.';
+function buildHotResult(substance, duration, withdrawal, dual, profile) {
+  var sub = 'Your ' + duration.toLowerCase() + ' of ' + substance.toLowerCase() + ' use';
+  if (withdrawal.toLowerCase().indexOf('severe') >= 0) sub += ' combined with severe withdrawal symptoms';
+  else if (withdrawal.toLowerCase().indexOf('moderate') >= 0) sub += ' combined with moderate withdrawal symptoms';
+  sub += ' indicates you need medically supervised care.';
+  if (dual) sub += ' Co-occurring mental health concerns make comprehensive treatment essential.';
 
-  return '<div class="result-card"><div class="result-header">'
-    +'<div class="result-icon-circle hot"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#cf2e2e" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>'
-    +'<h2>You Need Support Right Now</h2><p>'+sum+'</p></div>'
-    +'<div class="result-content">'
-    +'<div class="result-section"><p>Our 24/7 medically-supervised detox and residential program provides the safety you need to begin healing \u2014 in an intimate setting where you\u2019ll never feel like a number.</p></div>'
-    +'<div class="result-section"><h4>What You\u2019ll Receive at Pinnacle</h4><ul>'
-    +'<li>One of maximum 16 clients \u2014 our staff knows your name, your story, your goals</li>'
-    +'<li>2 hours of individual therapy + 30 hours of group therapy weekly</li>'
-    +'<li>Full psychiatric and medical evaluation within 24 hours</li>'
-    +'<li>Personalized treatment plan designed specifically for you</li>'
-    +'<li>Beautiful mountain setting that aids in healing \u2014 not institutional</li></ul></div>'
-    +'<div class="result-cta-box"><h3>Speak With Admissions Now</h3>'
-    +'<a href="tel:+18012597533" class="result-phone-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>(801) 259-7533</a>'
-    +'<p class="avail">Available 24/7 \u2014 Confidential, No Obligation</p></div>'
-    +'<div class="result-form"><h4>Verify My Insurance Coverage</h4><p class="form-sub">Get results in minutes. No obligation.</p>'
-    +'<div class="form-row"><input type="text" class="form-input" placeholder="First Name" id="hotName"><input type="tel" class="form-input" placeholder="Phone Number" id="hotPhone"></div>'
-    +'<div class="form-row full"><input type="text" class="form-input" placeholder="Insurance Provider" id="hotIns"></div>'
-    +'<button class="btn btn-primary mt-12" style="width:100%" onclick="window.PQ.submitForm(\'hot\')">Verify My Coverage</button></div>'
-    +'<div class="result-section"><h4>What Happens Next</h4><div class="result-steps">'
-    +'<div class="result-step"><div class="result-step-num">1</div><p>Call now or submit info above</p></div>'
-    +'<div class="result-step"><div class="result-step-num">2</div><p>Brief 10-15 min confidential assessment</p></div>'
-    +'<div class="result-step"><div class="result-step-num">3</div><p>We explain your options and answer all questions</p></div>'
-    +'<div class="result-step"><div class="result-step-num">4</div><p>Admission within 24-48 hours</p></div></div></div>'
-    +'<div class="result-testimonial"><blockquote>\u201cPinnacle Recovery in Utah was more than words or stars can ever describe. The staff is very accommodating and passionate about the work they do. I learned to change my behaviors and thinking through spirituality, meditation, therapy, and group sessions. Pinnacle has saved my life.\u201d</blockquote><cite>\u2014 Scott, Pinnacle Alumni</cite></div>'
-    +'</div></div>';
+  return rHeader
+    +'<div class="r-hero"><h1>Based on Your Assessment: You Need Immediate, Professional Support</h1>'
+    +'<p class="r-hero-sub">'+sub+'</p>'
+    +'<div class="r-urgency">\u26a0\ufe0f Medical supervision recommended</div></div>'
+    +'<div class="r-two-col">'
+    +profile
+    +'<div class="r-form-card"><h4>Speak With Admissions Now</h4><p class="r-form-sub">Confidential. No obligation. Available 24/7.</p>'
+    +'<input type="text" class="form-input" placeholder="First Name" id="hotName">'
+    +'<input type="tel" class="form-input" placeholder="Phone Number" id="hotPhone">'
+    +'<select class="form-input" id="hotIns" style="appearance:auto;"><option value="">Insurance Provider...</option><option>Aetna</option><option>Blue Cross Blue Shield</option><option>Cigna</option><option>United Healthcare</option><option>Humana</option><option>Kaiser</option><option>Other Private Insurance</option><option>No Insurance / Private Pay</option></select>'
+    +'<button class="btn btn-green mt-12" style="width:100%" onclick="window.PQ.submitForm(\'hot\')">Speak With Admissions Now</button>'
+    +'<p class="r-avail">Available 24/7 \u2014 Confidential</p></div></div>'
+    +'<div class="r-why-section"><h3>Why Pinnacle Is The Right Environment For Your Situation</h3><div class="r-why-grid">'
+    +'<div class="r-why-card"><div class="r-why-card-img"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-7-min.jpg" alt="Intimate setting" data-fallback></div><div class="r-why-card-body"><h4>Max 16 Clients</h4><p>You\u2019re not a number. Our staff knows your name, your story, your goals.</p></div></div>'
+    +'<div class="r-why-card"><div class="r-why-card-img"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-6-min.jpg" alt="Medical care" data-fallback></div><div class="r-why-card-body"><h4>24/7 Medical Supervision</h4><p>Full medical team on-site around the clock for safe, comfortable detox.</p></div></div>'
+    +'<div class="r-why-card"><div class="r-why-card-img"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2023/03/img-min.jpg" alt="Dual diagnosis" data-fallback></div><div class="r-why-card-body"><h4>Dual Diagnosis Care</h4><p>Addiction + mental health treated together. We address root causes, not just symptoms.</p></div></div>'
+    +'</div></div>'
+    +'<div class="r-steps-section"><h3>What Happens Next</h3><div class="r-steps-row">'
+    +'<div class="r-step-item"><div class="r-step-icon">1</div><p>Call now or submit your info</p></div>'
+    +'<div class="r-step-item"><div class="r-step-icon">2</div><p>10-15 min confidential assessment</p></div>'
+    +'<div class="r-step-item"><div class="r-step-icon">3</div><p>Options explained, all questions answered</p></div>'
+    +'<div class="r-step-item"><div class="r-step-icon">4</div><p>Admission within 24\u201348 hours</p></div>'
+    +'</div><a href="tel:+18012597533" class="btn btn-green" style="font-size:18px;padding:18px 48px;">'+phoneSvg+' Call Now: (801) 259-7533</a></div>'
+    +'<div class="r-testimonial-banner"><blockquote>\u201cPinnacle Recovery in Utah was more than words or stars can ever describe. The staff is very accommodating and passionate about the work they do. I learned to change my behaviors and thinking through spirituality, meditation, therapy, and group sessions. Pinnacle has saved my life.\u201d</blockquote><cite>\u2014 Scott, Pinnacle Alumni \u2014 2021</cite></div>'
+    +rFooter;
 }
 
-function buildWarmResult(substance, dual, prev) {
-  var sum = 'You\u2019re ready to make a change, and that takes courage. ';
-  if (prev) sum += 'We understand you\u2019ve tried treatment before \u2014 our approach is different: intimate setting, personalized care, evidence-based + holistic blend. ';
-  if (dual) sum += 'Our dual diagnosis program treats both addiction and co-occurring mental health \u2014 because you can\u2019t separate them. ';
-  sum += 'You\u2019re in the right place.';
+function buildWarmResult(substance, dual, prev, readiness, profile) {
+  var sub = '';
+  if (prev) sub += 'We know previous treatment didn\u2019t stick. Pinnacle\u2019s approach is fundamentally different. ';
+  sub += 'Your ' + substance.toLowerCase() + ' concerns are valid, and your willingness to explore options shows real strength.';
+  if (dual) sub += ' Our dual diagnosis program treats both addiction and mental health \u2014 because you can\u2019t separate them.';
 
-  return '<div class="result-card"><div class="result-header">'
-    +'<div class="result-icon-circle warm"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#e6960a" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>'
-    +'<h2>You\u2019re Ready \u2014 Let\u2019s Find Your Path</h2><p>'+sum+'</p></div>'
-    +'<div class="result-content">'
-    +'<div class="result-section"><h4>Why Pinnacle Is Different</h4><p>Unlike large facilities where you\u2019re one of 50+ clients, at Pinnacle you\u2019re one of 16 maximum. This intimate environment allows us to customize every aspect of your treatment, build real relationships, and create a family-like support system in Utah\u2019s mountain setting.</p></div>'
-    +'<div class="result-cta-box"><h3>Schedule Your Free Clinical Assessment</h3><p>30-minute confidential call. No pressure \u2014 just clarity.</p>'
-    +'<a href="tel:+18012597533" class="result-phone-big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>(801) 259-7533</a>'
-    +'<p class="avail">No obligation \u2014 we\u2019ll answer all your questions</p></div>'
-    +'<div class="result-form"><h4>Download Our Complete Treatment Guide</h4><p class="form-sub">Learn what to expect, see facility photos, understand your options.</p>'
-    +'<div class="form-row"><input type="text" class="form-input" placeholder="First Name" id="warmName"><input type="email" class="form-input" placeholder="Email Address" id="warmEmail"></div>'
-    +'<button class="btn btn-primary mt-12" style="width:100%" onclick="window.PQ.submitForm(\'warm\')">Send Me the Free Guide</button></div>'
-    +'<div class="result-section"><h4>What\u2019s Inside the Guide</h4><ul>'
-    +'<li>Residential vs IOP programs explained in plain language</li>'
-    +'<li>What a typical day at Pinnacle looks like</li>'
-    +'<li>Insurance and payment options breakdown</li>'
-    +'<li>Full facility tour photos</li>'
-    +'<li>Real stories from our alumni</li></ul></div>'
-    +'<div class="result-section"><h4>What Happens on the Assessment Call</h4><div class="result-steps">'
-    +'<div class="result-step"><div class="result-step-num">1</div><p>We learn about your situation</p></div>'
-    +'<div class="result-step"><div class="result-step-num">2</div><p>Explain which program fits best</p></div>'
-    +'<div class="result-step"><div class="result-step-num">3</div><p>Answer questions about insurance and cost</p></div>'
-    +'<div class="result-step"><div class="result-step-num">4</div><p>If ready, begin the admission process</p></div></div></div>'
-    +'<div class="result-testimonial"><blockquote>\u201cMy wife found Pinnacle on Google reviews and I took a leap of faith. The staff is very accommodating and personable. The house is like a family and everyone that works here is very passionate about the work they do.\u201d</blockquote><cite>\u2014 Scott, Pinnacle Alumni</cite></div>'
-    +'</div></div>';
+  return rHeader
+    +'<div class="r-hero"><h1>You\u2019re Ready to Make a Change \u2014 Let\u2019s Find Your Path</h1>'
+    +'<p class="r-hero-sub">'+sub+'</p></div>'
+    +'<div class="r-two-col">'
+    +profile
+    +'<div class="r-form-card"><h4>Schedule Your Free Clinical Assessment</h4><p class="r-form-sub">30-minute confidential call. No pressure \u2014 just clarity.</p>'
+    +'<input type="text" class="form-input" placeholder="First Name" id="warmName">'
+    +'<input type="email" class="form-input" placeholder="Email Address" id="warmEmail">'
+    +'<button class="btn btn-green mt-12" style="width:100%" onclick="window.PQ.submitForm(\'warm\')">Schedule Your Free Assessment</button>'
+    +'<p class="r-avail">Or call: <a href="tel:+18012597533" style="color:#1B3A5C;font-weight:600;">(801) 259-7533</a></p></div></div>'
+    +'<div class="r-why-section"><h3>Why Pinnacle Is Different</h3><div class="r-compare">'
+    +'<table class="r-compare-table"><tr><th>Most Centers</th><th>Pinnacle Recovery</th></tr>'
+    +'<tr><td>One of 50+ clients</td><td>One of max 16</td></tr>'
+    +'<tr><td>Cookie-cutter programs</td><td>Personalised treatment plan</td></tr>'
+    +'<tr><td>Institutional setting</td><td>Mountain sanctuary</td></tr>'
+    +'<tr><td>Treatment ends at discharge</td><td>Alumni for life</td></tr>'
+    +'<tr><td>Addiction only</td><td>Dual diagnosis specialists</td></tr>'
+    +'</table>'
+    +'<div class="r-compare-img"><img src="https://pinnaclerecoveryut.com/wp-content/uploads/2022/05/img-7-min.jpg" alt="Pinnacle facility" data-fallback></div>'
+    +'</div></div>'
+    +'<div class="r-form-section"><div class="r-form-inline"><h4>Download Our Complete Treatment Guide</h4><p class="form-sub">Facility photos, program details, insurance info, alumni stories.</p>'
+    +'<input type="text" class="form-input" placeholder="First Name" id="warmName2" style="margin-bottom:10px">'
+    +'<input type="email" class="form-input" placeholder="Email Address" id="warmEmail2" style="margin-bottom:12px">'
+    +'<button class="btn btn-primary" style="width:100%" onclick="window.PQ.submitForm(\'warm\')">Send Me the Free Guide</button></div></div>'
+    +'<div class="r-testimonial-banner"><blockquote>\u201cMy wife found Pinnacle on Google reviews and I took a leap of faith. The staff is very accommodating and personable. The house is like a family and everyone that works here is very passionate about the work they do.\u201d</blockquote><cite>\u2014 Scott, Pinnacle Alumni</cite></div>'
+    +rFooter;
 }
 
-function buildColdResult() {
-  return '<div class="result-card"><div class="result-header">'
-    +'<div class="result-icon-circle cold"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#6EC1E4" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>'
-    +'<h2>Start With Information</h2><p>You\u2019re taking an important first step by researching treatment options. Recovery starts with information, and we\u2019re here to help.</p></div>'
-    +'<div class="result-content">'
-    +'<div class="result-section"><h4>Treatment Options at Pinnacle</h4><ul>'
-    +'<li><strong>Residential Treatment</strong> (30-90 days) \u2014 Live at our facility with 24/7 care</li>'
-    +'<li><strong>Intensive Outpatient</strong> (3 evenings/week) \u2014 Continue daily life with structured support</li>'
-    +'<li><strong>Medically-Supervised Detox</strong> \u2014 Safe withdrawal management under 24/7 supervision</li>'
-    +'<li><strong>Dual Diagnosis Care</strong> \u2014 Treat addiction and mental health together</li>'
-    +'<li><strong>Aftercare &amp; Alumni Support</strong> \u2014 Recovery doesn\u2019t end at discharge</li></ul></div>'
-    +'<div class="result-section"><h4>What Makes Treatment Successful</h4><ul>'
-    +'<li>Evidence-based therapies (CBT, EMDR, trauma-informed care)</li>'
-    +'<li>Holistic healing (yoga, meditation, nature therapy)</li>'
-    +'<li>Personalized treatment plans \u2014 not cookie-cutter approaches</li>'
-    +'<li>Small client-to-staff ratios for individual attention</li>'
-    +'<li>Aftercare support \u2014 recovery is a lifelong journey</li></ul></div>'
-    +'<div class="result-form"><h4>Download Free Recovery Guide</h4><p class="form-sub">A comprehensive guide to understanding addiction treatment options in Utah.</p>'
-    +'<div class="form-row"><input type="text" class="form-input" placeholder="First Name" id="coldName"><input type="email" class="form-input" placeholder="Email Address" id="coldEmail"></div>'
-    +'<button class="btn btn-primary mt-12" style="width:100%" onclick="window.PQ.submitForm(\'cold\')">Download Free Guide</button></div>'
-    +'<div class="result-section" style="text-align:center;margin-top:24px;"><p style="margin-bottom:12px;">SAMHSA National Helpline: <a href="tel:18006624357" style="color:var(--color-navy);font-weight:600;">1-800-662-4357</a><br><span style="font-size:12px;color:var(--color-steel);">Free, confidential, 24/7 support</span></p>'
-    +'<a href="https://pinnaclerecoveryut.com/programs/" class="btn btn-outline-dark" target="_blank">Browse Our Programs</a></div>'
-    +'<div style="text-align:center;margin-top:20px;padding:24px;background:var(--color-light-bg);border-radius:12px;"><p style="font-size:14px;color:var(--color-dark);">When you\u2019re ready to talk, call us at <a href="tel:+18012597533" style="color:var(--color-navy);font-weight:600;">(801) 259-7533</a>.<br><strong>We\u2019ll meet you where you are.</strong></p></div>'
-    +'</div></div>';
+function buildColdResult(profile) {
+  return rHeader
+    +'<div class="r-hero cold-hero"><h1>You\u2019re Taking the Right First Step</h1>'
+    +'<p class="r-hero-sub">Understanding your options is the beginning of the journey. There\u2019s no pressure \u2014 just information.</p></div>'
+    +'<div style="max-width:480px;margin:-24px auto 0;padding:0 24px;position:relative;z-index:2;">'+profile+'</div>'
+    +'<div class="r-why-section"><h3>Understanding Your Treatment Options</h3><div class="r-edu-grid">'
+    +'<div class="r-edu-card"><h4>Residential Treatment</h4><p>Live at our facility for 30\u201390 days with 24/7 medical care, therapy, and holistic healing in a luxury mountain setting.</p></div>'
+    +'<div class="r-edu-card"><h4>Intensive Outpatient (IOP)</h4><p>Attend 3 evenings per week while living at home. Structured support that fits around your daily life and responsibilities.</p></div>'
+    +'<div class="r-edu-card"><h4>Medical Detox</h4><p>Safe, medically-supervised withdrawal management. 24/7 care ensures your comfort and safety throughout the process.</p></div>'
+    +'</div></div>'
+    +'<div class="r-form-section"><div class="r-form-inline"><h4>Send Me the Free Recovery Guide</h4><p class="form-sub">A comprehensive guide to understanding addiction treatment options in Utah.</p>'
+    +'<input type="text" class="form-input" placeholder="First Name" id="coldName" style="margin-bottom:10px">'
+    +'<input type="email" class="form-input" placeholder="Email Address" id="coldEmail" style="margin-bottom:12px">'
+    +'<button class="btn btn-primary" style="width:100%" onclick="window.PQ.submitForm(\'cold\')">Download Free Guide</button></div></div>'
+    +'<div class="r-samhsa"><p>SAMHSA National Helpline</p><a href="tel:18006624357">1-800-662-4357</a><p class="small">Free, confidential, 24/7 support</p>'
+    +'<div style="margin-top:16px;"><a href="https://pinnaclerecoveryut.com/programs/" class="btn btn-outline-dark" target="_blank">Browse Our Programs</a></div>'
+    +'<p style="margin-top:20px;font-size:14px;">When you\u2019re ready to talk, call <a href="tel:+18012597533" style="color:#1B3A5C;font-weight:600;">(801) 259-7533</a>. <strong>We\u2019ll meet you where you are.</strong></p></div>'
+    +rFooter;
 }
 
 // =============================================
